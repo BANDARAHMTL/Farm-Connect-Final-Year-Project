@@ -1,0 +1,52 @@
+/* App.css — legacy class support; main design system in theme.css */
+
+/* Keep old classes working for pages not yet redesigned */
+.input {
+  display: block; width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 0.9rem; color: var(--n900);
+  background: var(--surface); outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input:focus { border-color: var(--g500); box-shadow: 0 0 0 3px rgba(39,168,92,0.14); }
+
+.btn { 
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border);
+  background: #fff; color: var(--n700); transition: all 0.15s;
+}
+.btn:hover { background: var(--n100); }
+.btn.primary { background: var(--g700); color: #fff; border-color: var(--g700); box-shadow: 0 2px 6px rgba(27,110,62,0.28); }
+.btn.primary:hover { background: var(--g600); }
+.btn.danger { background: var(--danger-bg); color: var(--danger); border-color: #fca5a5; }
+.btn.danger:hover { background: var(--danger); color: #fff; }
+.btn.secondary { background: var(--g100); color: var(--g700); border-color: var(--g200); }
+
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--n700); margin-bottom: 6px; }
+.field input, .field select, .field textarea {
+  display: block; width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 0.9rem; color: var(--n900);
+  background: #fff; outline: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--g500); box-shadow: 0 0 0 3px rgba(39,168,92,0.14);
+}
+
+.table { width: 100%; border-collapse: collapse; }
+.table th { padding: 10px 14px; text-align: left; font-size: 0.75rem; font-weight: 700; color: var(--n500); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1.5px solid var(--border); background: var(--n050); }
+.table td { padding: 12px 14px; color: var(--n800); border-bottom: 1px solid var(--n100); font-size: 0.875rem; vertical-align: middle; }
+.table tbody tr:hover { background: var(--g050); }
+
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+.card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 22px; }
+
+/* Keep app layout */
+body, html, #root { height: 100%; margin: 0; background: var(--g050); color: var(--n900); }
+* { box-sizing: border-box; font-family: var(--font-body); }
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+.app-layout { display: flex; flex: 1; }
+.main-content { flex: 1; min-width: 0; }

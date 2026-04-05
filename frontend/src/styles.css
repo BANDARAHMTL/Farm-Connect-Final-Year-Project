@@ -1,0 +1,57 @@
+/* styles.css — auth page legacy styles */
+.auth-page {
+  min-height: calc(100vh - 60px);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--g050); padding: 32px 20px;
+}
+.auth-container {
+  width: 100%; max-width: 440px;
+  background: var(--surface); border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+  padding: 36px;
+}
+.auth-header { text-align: center; margin-bottom: 28px; }
+.auth-header h1 { font-size: 1.3rem; font-weight: 800; color: var(--n900); margin-bottom: 6px; }
+.auth-header p  { font-size: 0.875rem; color: var(--n500); }
+.auth-form { display: flex; flex-direction: column; gap: 4px; }
+.auth-btn { width: 100%; padding: 12px; font-size: 0.9rem; margin-top: 4px; }
+.auth-divider { text-align: center; padding: 14px 0 8px; color: var(--n400); font-size: 0.82rem; }
+.auth-footer { text-align: center; margin-top: 18px; }
+.auth-footer a { font-size: 0.82rem; color: var(--g700); text-decoration: none; font-weight: 500; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--n600); cursor: pointer; }
+.form-options { margin: 12px 0; }
+
+/* Page layouts */
+.home-page, .page-content { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+.page-header { margin-bottom: 28px; padding: 32px 0 12px; }
+.page-header h1, .page-header h2 { font-size: 1.6rem; font-weight: 800; color: var(--n900); margin: 0 0 6px; }
+.page-header p { color: var(--n500); font-size: 0.9rem; }
+
+/* Stats */
+.stats-grid, .actions-grid, .services-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.stat-card, .action-card, .service-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.stat-value { font-size: 1.8rem; font-weight: 800; color: var(--n900); }
+.stat-label { font-size: 0.8rem; color: var(--n500); margin-top: 4px; }
+
+/* Session styles */
+.sessions { background: var(--n050); border-radius: var(--radius-md); padding: 14px; }
+.session-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.session-row:last-child { border-bottom: none; }
+.session-label { font-size: 0.85rem; font-weight: 500; color: var(--n700); }
+.booked-text { font-size: 0.8rem; color: var(--n400); font-style: italic; }
+.book-btn { background: var(--g700); color: #fff; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+
+/* Cards (vehicle etc) */
+.card-image { width: 100%; height: 170px; object-fit: cover; }
+.card-body  { padding: 16px; }
+.card-title { font-size: 1rem; font-weight: 700; color: var(--n900); margin: 0 0 6px; }
+.meta       { font-size: 0.82rem; color: var(--n600); display: flex; flex-direction: column; gap: 4px; }
+.price      { font-size: 1rem; font-weight: 700; color: var(--g700); margin-top: 6px; }
+.availability { background: var(--g100); color: var(--g700); border: 1px solid var(--g300); border-radius: var(--radius-sm); padding: 8px 16px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+.availability.open { background: var(--g700); color: #fff; }
