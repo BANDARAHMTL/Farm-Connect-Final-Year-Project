@@ -1,0 +1,155 @@
+/* ═══════════════════════════════════════════════════════════════
+   BUTTON COMPONENT STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.fc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.fc-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ─── Button Variants ─────────────────────────────────────────── */
+.fc-btn-primary {
+  background: var(--g700);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(27, 110, 62, 0.30);
+}
+
+.fc-btn-primary:hover:not(:disabled) {
+  background: var(--g600);
+  box-shadow: 0 4px 14px rgba(27, 110, 62, 0.35);
+  transform: translateY(-1px);
+}
+
+.fc-btn-secondary {
+  background: var(--g100);
+  color: var(--g700);
+  border: 1px solid var(--g200);
+}
+
+.fc-btn-secondary:hover:not(:disabled) {
+  background: var(--g200);
+  border-color: var(--g300);
+}
+
+.fc-btn-ghost {
+  background: transparent;
+  color: var(--n600);
+  border: 1px solid var(--border);
+}
+
+.fc-btn-ghost:hover:not(:disabled) {
+  background: var(--n100);
+  color: var(--n900);
+}
+
+.fc-btn-danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+
+.fc-btn-danger:hover:not(:disabled) {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ─── Button Sizes ───────────────────────────────────────────── */
+.fc-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+.fc-btn-lg {
+  padding: 12px 28px;
+  font-size: 0.95rem;
+}
+
+.fc-btn-xl {
+  padding: 14px 36px;
+  font-size: 1rem;
+}
+
+.fc-btn-full {
+  width: 100%;
+}
+
+/* Legacy Button Classes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--n700);
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  background: var(--n100);
+}
+
+.btn.primary {
+  background: var(--g700);
+  color: #fff;
+  border-color: var(--g700);
+  box-shadow: 0 2px 6px rgba(27, 110, 62, 0.28);
+}
+
+.btn.primary:hover {
+  background: var(--g600);
+}
+
+.btn.danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: #fca5a5;
+}
+
+.btn.danger:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn.secondary {
+  background: var(--g100);
+  color: var(--g700);
+  border-color: var(--g200);
+}
+
+.book-btn {
+  background: var(--g700);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.book-btn:hover {
+  background: var(--g600);
+}

@@ -1,0 +1,148 @@
+/* ═══════════════════════════════════════════════════════════════
+   FORM COMPONENT STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.fc-input, .fc-select, .fc-textarea {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--n900);
+  background: var(--surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+.fc-input::placeholder, .fc-select::placeholder {
+  color: var(--n400);
+}
+
+.fc-input:focus, .fc-select:focus, .fc-textarea:focus {
+  border-color: var(--g500);
+  box-shadow: 0 0 0 3px rgba(39, 168, 92, 0.14);
+}
+
+.fc-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.fc-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--n700);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+.fc-field {
+  margin-bottom: 18px;
+}
+
+/* ─── Legacy Form Styles ──────────────────────────────────────── */
+.input {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--n900);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: var(--g500);
+  box-shadow: 0 0 0 3px rgba(39, 168, 92, 0.14);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--n700);
+  margin-bottom: 6px;
+}
+
+.field input, .field select, .field textarea {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--n900);
+  background: #fff;
+  outline: none;
+}
+
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--g500);
+  box-shadow: 0 0 0 3px rgba(39, 168, 92, 0.14);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: var(--n600);
+  cursor: pointer;
+}
+
+.form-options {
+  margin: 12px 0;
+}
+
+/* ─── Search Input ────────────────────────────────────────────── */
+.fc-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+.fc-search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--n400);
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+.fc-search .fc-input {
+  padding-left: 36px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--g500);
+  box-shadow: 0 0 0 3px rgba(39, 168, 92, 0.14);
+}
+
+.search-box {
+  flex: 1;
+  min-width: 300px;
+}

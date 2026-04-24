@@ -1,0 +1,138 @@
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR COMPONENT STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.sidebar {
+  background: var(--g900);
+  color: #fff;
+  width: 250px;
+  padding: 20px 0;
+  height: 100vh;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-item {
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.sidebar-item:hover {
+  background: var(--g800);
+  padding-left: 24px;
+}
+
+.sidebar-item.active {
+  background: var(--g700);
+  border-left: 3px solid var(--g200);
+  padding-left: 17px;
+}
+
+.sidebar-icon {
+  font-size: 1.1rem;
+}
+
+.sidebar-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--g800);
+  display: none;
+}
+
+.sidebar-item.expanded .sidebar-submenu {
+  display: block;
+}
+
+.sidebar-submenu-item {
+  padding: 10px 20px 10px 40px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar-submenu-item:hover {
+  background: var(--g700);
+  padding-left: 44px;
+}
+
+.admin-sidebar {
+  background: var(--g900);
+  color: #fff;
+  width: 260px;
+  padding: 20px 0;
+  height: calc(100vh - 60px);
+  box-shadow: var(--shadow-sm);
+  position: fixed;
+  left: 0;
+  top: 60px;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.admin-sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-sidebar-item {
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+}
+
+.admin-sidebar-item:hover {
+  background: var(--g800);
+  padding-left: 24px;
+}
+
+.admin-sidebar-item.active {
+  background: var(--g700);
+  border-left-color: var(--g200);
+  padding-left: 17px;
+}
+
+/* ─── Main Content Wrapper (when sidebar is fixed) ─────────────── */
+.main-with-sidebar {
+  margin-left: 260px;
+}
+
+@media (max-width: 768px) {
+  .sidebar, .admin-sidebar {
+    position: absolute;
+    display: none;
+    width: 100%;
+  }
+
+  .sidebar.open, .admin-sidebar.open {
+    display: block;
+  }
+
+  .main-with-sidebar {
+    margin-left: 0;
+  }
+}

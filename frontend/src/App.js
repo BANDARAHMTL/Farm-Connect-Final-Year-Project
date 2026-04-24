@@ -1,10 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// ═════ STYLES ═════
-import "./App.css";
-import "./App_1.css";
-
 // ═════ CORE COMPONENTS ═════
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -221,6 +217,7 @@ export default function App() {
         />
 
         {/* Admin Routes */}
+
         <Route path="/login" element={<AdminLogin />} />
         <Route
           path="/admin/*"

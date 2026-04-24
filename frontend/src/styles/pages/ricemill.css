@@ -1,0 +1,201 @@
+/* ═══════════════════════════════════════════════════════════════
+   RICE MILL PAGE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.ricemills-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.ricemill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.ricemill-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.ricemill-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.ricemill-logo {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: var(--g050);
+}
+
+.ricemill-content {
+  padding: 16px;
+}
+
+.ricemill-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--n900);
+  margin-bottom: 8px;
+}
+
+.ricemill-location {
+  font-size: 0.85rem;
+  color: var(--n500);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.ricemill-contact {
+  font-size: 0.85rem;
+  color: var(--n600);
+  margin-bottom: 12px;
+}
+
+.ricemill-rating {
+  font-size: 0.9rem;
+  color: var(--g700);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.ricemill-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ricemill-actions button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ricemill-actions .view-btn {
+  background: var(--g700);
+  color: white;
+}
+
+.ricemill-actions .view-btn:hover {
+  background: var(--g600);
+}
+
+.ricemill-actions .contact-btn {
+  background: var(--g100);
+  color: var(--g700);
+  border: 1px solid var(--g200);
+}
+
+.ricemill-actions .contact-btn:hover {
+  background: var(--g200);
+}
+
+/* ─── Price Manager Section ───────────────────────────────────── */
+.price-manager-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.price-form {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--n700);
+  font-size: 0.9rem;
+}
+
+.form-group input, .form-group select {
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--g500);
+  box-shadow: 0 0 0 3px rgba(39, 168, 92, 0.14);
+}
+
+.price-list {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease;
+}
+
+.price-item:last-child {
+  border-bottom: none;
+}
+
+.price-item:hover {
+  background: var(--g050);
+}
+
+.rice-type-name {
+  font-weight: 600;
+  color: var(--n900);
+}
+
+.price-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--g700);
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ricemill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,282 @@
+/* ═══════════════════════════════════════════════════════════════
+   BADGE, MODAL, ALERT & UTILITY COMPONENTS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── BADGE ───────────────────────────────────────────────────── */
+.fc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.fc-badge::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.fc-badge-success {
+  background: var(--success-bg);
+  color: #166534;
+}
+
+.fc-badge-warning {
+  background: var(--warning-bg);
+  color: #92400e;
+}
+
+.fc-badge-danger {
+  background: var(--danger-bg);
+  color: #991b1b;
+}
+
+.fc-badge-info {
+  background: var(--info-bg);
+  color: #075985;
+}
+
+.fc-badge-neutral {
+  background: var(--n100);
+  color: var(--n600);
+}
+
+/* ─── MODAL ───────────────────────────────────────────────────── */
+.fc-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 46, 26, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.fc-modal {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.22s ease;
+}
+
+.fc-modal-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+
+.fc-modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--n900);
+}
+
+.fc-modal-subtitle {
+  font-size: 0.82rem;
+  color: var(--n500);
+  margin-top: 3px;
+}
+
+.fc-modal-body {
+  padding: 24px 28px;
+}
+
+.fc-modal-footer {
+  padding: 18px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: var(--n050);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.fc-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--n100);
+  color: var(--n600);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.fc-modal-close:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ─── ALERT ───────────────────────────────────────────────────── */
+.fc-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+}
+
+.fc-alert-error {
+  background: var(--danger-bg);
+  color: #7f1d1d;
+  border: 1px solid #fca5a5;
+}
+
+.fc-alert-success {
+  background: var(--success-bg);
+  color: #14532d;
+  border: 1px solid #86efac;
+}
+
+.fc-alert-warning {
+  background: var(--warning-bg);
+  color: #78350f;
+  border: 1px solid #fcd34d;
+}
+
+/* ─── PROGRESS BAR ────────────────────────────────────────────── */
+.fc-progress {
+  height: 6px;
+  background: var(--n200);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.fc-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--g600), var(--g400));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* ─── DIVIDER ─────────────────────────────────────────────────── */
+.fc-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+/* ─── PAGE HEADER ─────────────────────────────────────────────── */
+.fc-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.fc-page-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--n900);
+}
+
+.fc-page-subtitle {
+  font-size: 0.85rem;
+  color: var(--n500);
+  margin-top: 3px;
+}
+
+/* ─── STEP INDICATOR ──────────────────────────────────────────── */
+.fc-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 32px;
+}
+
+.fc-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.fc-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--n200);
+  color: var(--n500);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.fc-step.active .fc-step-num {
+  background: var(--g700);
+  color: #fff;
+}
+
+.fc-step.done .fc-step-num {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.fc-step-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--n500);
+}
+
+.fc-step.active .fc-step-label {
+  color: var(--g700);
+}
+
+.fc-step.done .fc-step-label {
+  color: var(--success);
+}
+
+.fc-step-line {
+  flex: 1;
+  height: 1.5px;
+  background: var(--n200);
+  margin: 0 8px;
+}
+
+.fc-step.done .fc-step-line {
+  background: var(--g400);
+}
+
+/* ─── LOADING STATES ──────────────────────────────────────────── */
+.fc-skeleton {
+  background: linear-gradient(90deg, var(--n100) 25%, var(--n200) 50%, var(--n100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-sm);
+}

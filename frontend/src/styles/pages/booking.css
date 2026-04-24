@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════════════════
+   BOOKING PAGE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.booking-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.booking-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.booking-form {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+
+.booking-list {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.booking-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.booking-item:last-child {
+  border-bottom: none;
+}
+
+.booking-item:hover {
+  background: var(--g050);
+}
+
+.booking-info {
+  flex: 1;
+}
+
+.booking-id {
+  font-weight: 700;
+  color: var(--n900);
+  margin-bottom: 4px;
+}
+
+.booking-details {
+  font-size: 0.85rem;
+  color: var(--n500);
+}
+
+.booking-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.booking-status.pending {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.booking-status.confirmed {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.booking-status.cancelled {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.booking-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.booking-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-btn {
+  background: var(--g100);
+  color: var(--g700);
+  border: 1px solid var(--g200);
+}
+
+.edit-btn:hover {
+  background: var(--g200);
+}
+
+.delete-btn {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+
+.delete-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.cancel-btn {
+  background: var(--g700);
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: var(--g600);
+}
+
+/* ─── Booking Details Modal ───────────────────────────────────── */
+.booking-details-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--n700);
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.detail-value {
+  color: var(--n900);
+  font-size: 0.95rem;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .booking-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .booking-actions {
+    width: 100%;
+  }
+
+  .booking-actions button {
+    flex: 1;
+  }
+
+  .booking-details-container {
+    grid-template-columns: 1fr;
+  }
+}

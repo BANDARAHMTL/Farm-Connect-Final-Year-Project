@@ -1,0 +1,87 @@
+/* ═══════════════════════════════════════════════════════════════
+   HOME PAGE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.home-page, .page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.page-header {
+  margin-bottom: 28px;
+  padding: 32px 0 12px;
+}
+
+.page-header h1, .page-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--n900);
+  margin: 0 0 6px;
+}
+
+.page-header p {
+  color: var(--n500);
+  font-size: 0.9rem;
+}
+
+/* ─── Stats Grid ──────────────────────────────────────────────── */
+.stats-grid, .actions-grid, .services-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.stats-grid {
+  margin-bottom: 32px;
+}
+
+.actions-grid {
+  margin-bottom: 32px;
+}
+
+.services-grid {
+  margin-bottom: 32px;
+}
+
+/* ─── Session Styles ──────────────────────────────────────────── */
+.sessions {
+  background: var(--n050);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.session-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.session-row:last-child {
+  border-bottom: none;
+}
+
+.session-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--n700);
+}
+
+.booked-text {
+  font-size: 0.8rem;
+  color: var(--n400);
+  font-style: italic;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .stats-grid, .actions-grid, .services-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .page-header h1, .page-header h2 {
+    font-size: 1.35rem;
+  }
+}
