@@ -183,6 +183,7 @@
   background: white;
 }
 
+
 .weight-label {
   font-weight: 600;
   color: #2c3e50;
@@ -200,6 +201,10 @@
   font-size: 0.7rem;
   color: var(--success);
   font-weight: 600;
+
+
+
+  
   margin-top: 2px;
 }
 
