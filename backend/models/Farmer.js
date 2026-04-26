@@ -3,7 +3,7 @@
  * Extends base Model class with validation and farmer-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Farmer extends Model {
   constructor(data = {}) {
@@ -197,4 +197,4 @@ class Farmer extends Model {
   }
 }
 
-module.exports = Farmer;
+export default Farmer;

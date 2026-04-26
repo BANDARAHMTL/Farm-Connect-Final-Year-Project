@@ -3,7 +3,7 @@
  * Extends base Model class with validation and rice mill-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class RiceMill extends Model {
   constructor(data = {}) {
@@ -225,4 +225,4 @@ class RiceMill extends Model {
   }
 }
 
-module.exports = RiceMill;
+export default RiceMill;

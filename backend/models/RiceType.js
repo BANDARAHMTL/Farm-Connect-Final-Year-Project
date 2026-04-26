@@ -3,7 +3,7 @@
  * Extends base Model class with validation and rice type-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class RiceType extends Model {
   constructor(data = {}) {
@@ -187,4 +187,4 @@ class RiceType extends Model {
   }
 }
 
-module.exports = RiceType;
+export default RiceType;

@@ -12,8 +12,8 @@
  * - User search and filtering
  */
 
-const Controller = require('./Controller');
-const User = require('../models/User');
+import Controller from './Controller.js';
+import User from '../models/User.js';
 
 class UserController extends Controller {
   /**
@@ -317,4 +317,37 @@ class UserController extends Controller {
   }
 }
 
-module.exports = UserController;
+// Create instance for handler functions
+const userController = new UserController();
+
+// Export handler functions for routes
+export const getUsers = (req, res) => {
+  const result = userController.getAll();
+  res.status(result.statusCode).json(result);
+};
+
+export const getUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = userController.getById(id);
+  res.status(result.statusCode).json(result);
+};
+
+export const createUser = (req, res) => {
+  const result = userController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const updateUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = userController.update(id, req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const deleteUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = userController.delete(id);
+  res.status(result.statusCode).json(result);
+};
+
+// Export controller class
+export default UserController;

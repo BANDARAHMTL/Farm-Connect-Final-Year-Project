@@ -3,8 +3,8 @@
  * Extends base Controller for CRUD + custom admin methods
  */
 
-const Controller = require('./Controller');
-const Admin = require('../models/Admin');
+import Controller from './Controller.js';
+import Admin from '../models/Admin.js';
 
 class AdminController extends Controller {
   constructor() {
@@ -236,4 +236,37 @@ class AdminController extends Controller {
   }
 }
 
-module.exports = AdminController;
+// Create instance for handler functions
+const adminController = new AdminController();
+
+// Export handler functions for routes
+export const registerAdmin = (req, res) => {
+  const result = adminController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const adminLogin = (req, res) => {
+  const { username, password } = req.body;
+  const result = adminController.findByUsername(username);
+  res.status(result.statusCode).json(result);
+};
+
+export const listFarmers = (req, res) => {
+  const result = adminController.getAll();
+  res.status(result.statusCode).json(result);
+};
+
+export const updateFarmer = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = adminController.update(id, req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const deleteFarmer = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = adminController.delete(id);
+  res.status(result.statusCode).json(result);
+};
+
+// Export controller class
+export default AdminController;

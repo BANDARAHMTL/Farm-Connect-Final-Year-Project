@@ -1,5 +1,5 @@
 import express from "express";
-import { registerFarmer, farmerLogin, getFarmerProfile, getFarmerById } from "../controllers/farmer.controller.js";
+import { registerFarmer, farmerLogin, getFarmerProfile, getFarmerById } from "../controllers/FarmerController.js";
 import { farmerAuth } from "../middleware/farmerAuth.js";
 
 const router = express.Router();

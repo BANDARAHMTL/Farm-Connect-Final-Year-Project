@@ -7,7 +7,7 @@
  * Handles booking status and date management.
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Booking extends Model {
   /**
@@ -382,4 +382,4 @@ class Booking extends Model {
   }
 }
 
-module.exports = Booking;
+export default Booking;

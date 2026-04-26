@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { listVehicles, getVehicle, addVehicle, updateVehicle, deleteVehicle } from "../controllers/vehicle.controller.js";
+import { listVehicles, getVehicle, addVehicle, updateVehicle, deleteVehicle } from "../controllers/VehicleController.js";
 import adminAuth from "../middleware/adminAuth.js";
 import { uploadVehicle } from "../middleware/upload.js";
 

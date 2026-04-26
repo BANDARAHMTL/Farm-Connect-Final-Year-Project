@@ -1,5 +1,5 @@
 import express from "express";
-import { registerAdmin, adminLogin, listFarmers, updateFarmer, deleteFarmer } from "../controllers/admin.controller.js";
+import { registerAdmin, adminLogin, listFarmers, updateFarmer, deleteFarmer } from "../controllers/AdminController.js";
 import adminAuth from "../middleware/adminAuth.js";
 
 const router = express.Router();

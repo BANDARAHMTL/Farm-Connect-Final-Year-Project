@@ -3,8 +3,8 @@
  * Extends base Controller for CRUD + custom vehicle methods
  */
 
-const Controller = require('./Controller');
-const Vehicle = require('../models/Vehicle');
+import Controller from './Controller.js';
+import Vehicle from '../models/Vehicle.js';
 
 class VehicleController extends Controller {
   constructor() {
@@ -236,4 +236,37 @@ class VehicleController extends Controller {
   }
 }
 
-module.exports = VehicleController;
+// Create instance for handler functions
+const vehicleController = new VehicleController();
+
+// Export handler functions for routes
+export const listVehicles = (req, res) => {
+  const result = vehicleController.getAll();
+  res.status(result.statusCode).json(result);
+};
+
+export const getVehicle = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = vehicleController.getById(id);
+  res.status(result.statusCode).json(result);
+};
+
+export const addVehicle = (req, res) => {
+  const result = vehicleController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const updateVehicle = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = vehicleController.update(id, req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const deleteVehicle = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = vehicleController.delete(id);
+  res.status(result.statusCode).json(result);
+};
+
+// Export controller class
+export default VehicleController;

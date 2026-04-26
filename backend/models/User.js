@@ -12,7 +12,7 @@
  * - Abstraction: Complex validation hidden in methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class User extends Model {
   /**
@@ -270,4 +270,4 @@ class User extends Model {
   }
 }
 
-module.exports = User;
+export default User;

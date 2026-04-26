@@ -3,8 +3,8 @@
  * Extends base Controller for CRUD + custom farmer methods
  */
 
-const Controller = require('./Controller');
-const Farmer = require('../models/Farmer');
+import Controller from './Controller.js';
+import Farmer from '../models/Farmer.js';
 
 class FarmerController extends Controller {
   constructor() {
@@ -246,4 +246,32 @@ class FarmerController extends Controller {
   }
 }
 
-module.exports = FarmerController;
+// Create instance for handler functions
+const farmerController = new FarmerController();
+
+// Export handler functions for routes
+export const registerFarmer = (req, res) => {
+  const result = farmerController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const farmerLogin = (req, res) => {
+  const { email, password } = req.body;
+  const result = farmerController.findByEmail(email);
+  res.status(result.statusCode).json(result);
+};
+
+export const getFarmerProfile = (req, res) => {
+  const id = req.farmer?.id || parseInt(req.params.id);
+  const result = farmerController.getById(id);
+  res.status(result.statusCode).json(result);
+};
+
+export const getFarmerById = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = farmerController.getById(id);
+  res.status(result.statusCode).json(result);
+};
+
+// Export controller class
+export default FarmerController;

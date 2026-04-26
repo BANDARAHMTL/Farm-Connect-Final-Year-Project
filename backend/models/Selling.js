@@ -3,7 +3,7 @@
  * Extends base Model class with validation and selling-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Selling extends Model {
   constructor(data = {}) {
@@ -336,4 +336,4 @@ class Selling extends Model {
   }
 }
 
-module.exports = Selling;
+export default Selling;

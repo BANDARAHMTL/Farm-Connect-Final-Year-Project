@@ -3,7 +3,7 @@
  * Extends base Model class with validation and admin-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Admin extends Model {
   constructor(data = {}) {
@@ -179,4 +179,4 @@ class Admin extends Model {
   }
 }
 
-module.exports = Admin;
+export default Admin;

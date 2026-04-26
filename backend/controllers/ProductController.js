@@ -7,8 +7,8 @@
  * Includes inventory management and price calculations.
  */
 
-const Controller = require('./Controller');
-const Product = require('../models/Product');
+import Controller from './Controller.js';
+import Product from '../models/Product.js';
 
 class ProductController extends Controller {
   /**
@@ -352,4 +352,42 @@ class ProductController extends Controller {
   }
 }
 
-module.exports = ProductController;
+// Create instance for handler functions
+const productController = new ProductController();
+
+// Export handler functions for routes
+export const getProducts = (req, res) => {
+  const result = productController.getAll();
+  res.status(result.statusCode).json(result);
+};
+
+export const getProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = productController.getById(id);
+  res.status(result.statusCode).json(result);
+};
+
+export const createProduct = (req, res) => {
+  const result = productController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const addProduct = (req, res) => {
+  const result = productController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const updateProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = productController.update(id, req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const deleteProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = productController.delete(id);
+  res.status(result.statusCode).json(result);
+};
+
+// Export controller class
+export default ProductController;

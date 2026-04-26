@@ -3,7 +3,7 @@
  * Extends base Model class with validation and vehicle-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Vehicle extends Model {
   constructor(data = {}) {
@@ -252,4 +252,4 @@ class Vehicle extends Model {
   }
 }
 
-module.exports = Vehicle;
+export default Vehicle;

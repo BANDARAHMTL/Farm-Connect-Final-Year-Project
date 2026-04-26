@@ -3,7 +3,7 @@
  * Extends base Model class with validation and marketplace-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Rice extends Model {
   constructor(data = {}) {
@@ -284,4 +284,4 @@ class Rice extends Model {
   }
 }
 
-module.exports = Rice;
+export default Rice;

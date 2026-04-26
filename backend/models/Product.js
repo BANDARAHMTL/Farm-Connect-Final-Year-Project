@@ -7,7 +7,7 @@
  * Handles product data and price management.
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class Product extends Model {
   /**
@@ -290,4 +290,4 @@ class Product extends Model {
   }
 }
 
-module.exports = Product;
+export default Product;

@@ -7,8 +7,8 @@
  * Manages booking status transitions and duration calculations.
  */
 
-const Controller = require('./Controller');
-const Booking = require('../models/Booking');
+import Controller from './Controller.js';
+import Booking from '../models/Booking.js';
 
 class BookingController extends Controller {
   /**
@@ -343,4 +343,42 @@ class BookingController extends Controller {
   }
 }
 
-module.exports = BookingController;
+// Create instance for handler functions
+const bookingController = new BookingController();
+
+// Export handler functions for routes
+export const getAllBookings = (req, res) => {
+  const result = bookingController.getAll();
+  res.status(result.statusCode).json(result);
+};
+
+export const createBooking = (req, res) => {
+  const result = bookingController.create(req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const updateBookingStatus = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = bookingController.update(id, req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const updateBooking = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = bookingController.update(id, req.body);
+  res.status(result.statusCode).json(result);
+};
+
+export const deleteBooking = (req, res) => {
+  const id = parseInt(req.params.id);
+  const result = bookingController.delete(id);
+  res.status(result.statusCode).json(result);
+};
+
+export const getUserBookings = (req, res) => {
+  const result = bookingController.getAll();
+  res.status(result.statusCode).json(result);
+};
+
+// Export controller class
+export default BookingController;

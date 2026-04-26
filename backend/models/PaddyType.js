@@ -3,7 +3,7 @@
  * Extends base Model class with validation and paddy-specific methods
  */
 
-const Model = require('../Model');
+import Model from './Model.js';
 
 class PaddyType extends Model {
   constructor(data = {}) {
@@ -198,4 +198,4 @@ class PaddyType extends Model {
   }
 }
 
-module.exports = PaddyType;
+export default PaddyType;

@@ -128,4 +128,4 @@ class Model {
 }
 
 // Export the base Model class
-module.exports = Model;
+export default Model;

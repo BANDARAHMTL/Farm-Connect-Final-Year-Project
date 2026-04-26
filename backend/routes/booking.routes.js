@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllBookings, createBooking, updateBookingStatus,
   updateBooking, deleteBooking, getUserBookings,
-} from "../controllers/booking.controller.js";
+} from "../controllers/BookingController.js";
 import adminAuth from "../middleware/adminAuth.js";
 import { userAuth } from "../middleware/authMiddleware.js";
 
