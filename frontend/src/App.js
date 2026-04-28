@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // ═════ CORE COMPONENTS ═════
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { ThemeProvider } from "./contexts/ThemeContext";
 
 // ═════ PAGES ═════
 import Home from "./pages/Home";
@@ -167,8 +166,7 @@ export default function App() {
 
   // ═════ RENDER ═════
   return (
-    <ThemeProvider>
-      <BrowserRouter>
+    <BrowserRouter>
         <Routes>
           {/* Public Routes */}
           <Route
@@ -245,6 +243,5 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
-    </ThemeProvider>
   );
 }
