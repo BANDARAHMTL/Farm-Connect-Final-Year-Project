@@ -34,10 +34,12 @@ export default function BookingPage({
   isBooked,
   modalTotalPrice,
   availableLocations,
+  refreshVehicles,
 }) {
   const [q, setQ] = React.useState("");
   const [bSlide, setBSlide] = React.useState(0);
   const [bFade, setBFade] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   // Filter vehicles by search query
   const display = filtered.filter((v) => {
@@ -84,6 +86,17 @@ export default function BookingPage({
       setBSlide((s) => (s + 1) % HERO_SLIDES.length);
       setBFade(true);
     }, 300);
+  };
+
+  const handleRefreshVehicles = async () => {
+    setRefreshing(true);
+    try {
+      await refreshVehicles();
+    } catch (err) {
+      console.error("Error refreshing vehicles:", err);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   return (
@@ -590,6 +603,40 @@ export default function BookingPage({
               }}
             />
           </div>
+
+          {/* Refresh Button */}
+          <button
+            onClick={handleRefreshVehicles}
+            disabled={refreshing}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: 99,
+              padding: "9px 18px",
+              background: refreshing ? "rgba(255,255,255,0.05)" : "rgba(34, 197, 94, 0.12)",
+              color: refreshing ? "rgba(255,255,255,0.4)" : "#22c55e",
+              fontSize: "0.82rem",
+              fontWeight: 700,
+              cursor: refreshing ? "not-allowed" : "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s",
+              opacity: refreshing ? 0.6 : 1,
+            }}
+          >
+            {refreshing ? (
+              <>
+                <span style={{ display: "inline-block", animation: "spin 1s linear infinite" }}>◌</span>
+                Refreshing...
+              </>
+            ) : (
+              <>
+                <span>🔄</span>
+                Refresh
+              </>
+            )}
+          </button>
         </div>
       </div>
 

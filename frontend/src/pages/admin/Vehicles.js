@@ -361,7 +361,7 @@ export default function Vehicles() {
   }
 
   async function load() {
-    try { const r = await api.get("/vehicles"); setVehicles(r.data || []); }
+    try { const r = await api.get("/vehicles"); setVehicles(r.data?.data || []); }
     catch (e) { console.error(e); }
     finally { setLoading(false); }
   }

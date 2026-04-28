@@ -26,12 +26,15 @@ function mapVehicle(v) {
 
 export async function getVehicles() {
   const res = await api.get("/vehicles");
-  return Array.isArray(res.data) ? res.data.map(mapVehicle) : [];
+  // API returns { success, data: [...] } structure
+  return Array.isArray(res.data.data) ? res.data.data.map(mapVehicle) : [];
 }
 
 export async function getVehicleById(id) {
   const res = await api.get(`/vehicles/${id}`);
-  return mapVehicle(res.data);
+  // Handle both wrapped { data: {...} } and direct {...} responses
+  const vehicleData = res.data.data || res.data;
+  return mapVehicle(vehicleData);
 }
 
 const vehicleService = { getVehicles, getVehicleById };

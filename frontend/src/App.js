@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // ═════ CORE COMPONENTS ═════
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 // ═════ PAGES ═════
 import Home from "./pages/Home";
@@ -63,6 +64,16 @@ export default function App() {
       mounted = false;
     };
   }, []);
+
+  // ═════ REFRESH VEHICLES ═════
+  const refreshVehicles = async () => {
+    try {
+      const list = await vehicleService.getVehicles();
+      setVehicles(Array.isArray(list) ? list : []);
+    } catch (err) {
+      console.error("Failed to refresh vehicles:", err?.message);
+    }
+  };
 
   // ═════ MANAGE BOOKINGS ═════
   useEffect(() => {
@@ -156,81 +167,84 @@ export default function App() {
 
   // ═════ RENDER ═════
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route
-          path="/"
-          element={
-            <div className="app">
-              <NavBar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-              <div className="app-layout">
-                <main className="main-content">
-                  {currentPage === "Home" && (
-                    <Home setCurrentPage={setCurrentPage} />
-                  )}
-                  {currentPage === "Booking" && (
-                    <BookingPage
-                      vehicleType={vehicleType}
-                      setVehicleType={setVehicleType}
-                      location={location}
-                      setLocation={setLocation}
-                      selectedModelId={selectedModelId}
-                      setSelectedModelId={setSelectedModelId}
-                      date={date}
-                      setDate={setDate}
-                      vehicles={vehicles}
-                      bookings={bookings}
-                      expandedVehicleId={expandedVehicleId}
-                      setExpandedVehicleId={setExpandedVehicleId}
-                      showModal={showModal}
-                      setShowModal={setShowModal}
-                      selectedVehicle={selectedVehicle}
-                      setSelectedVehicle={setSelectedVehicle}
-                      selectedSession={selectedSession}
-                      setSelectedSession={setSelectedSession}
-                      form={form}
-                      setForm={setForm}
-                      handleConfirm={handleConfirm}
-                      modelOptions={modelOptions}
-                      filtered={filtered}
-                      isBooked={isBooked}
-                      modalTotalPrice={modalTotalPrice}
-                      availableLocations={availableLocations}
-                    />
-                  )}
-                  {currentPage === "Selling" && <Selling />}
-                  {currentPage === "Account" && (
-                    <Account setCurrentPage={setCurrentPage} />
-                  )}
-                  {currentPage === "AccountSignIn" && (
-                    <AccountSignIn setCurrentPage={setCurrentPage} />
-                  )}
-                  {currentPage === "AccountSignUp" && (
-                    <AccountSignUp setCurrentPage={setCurrentPage} />
-                  )}
-                  {currentPage === "RiceMarket" && <RiceMarket />}
-                </main>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route
+            path="/"
+            element={
+              <div className="app">
+                <NavBar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                <div className="app-layout">
+                  <main className="main-content">
+                    {currentPage === "Home" && (
+                      <Home setCurrentPage={setCurrentPage} />
+                    )}
+                    {currentPage === "Booking" && (
+                      <BookingPage
+                        vehicleType={vehicleType}
+                        setVehicleType={setVehicleType}
+                        location={location}
+                        setLocation={setLocation}
+                        selectedModelId={selectedModelId}
+                        setSelectedModelId={setSelectedModelId}
+                        date={date}
+                        setDate={setDate}
+                        vehicles={vehicles}
+                        bookings={bookings}
+                        expandedVehicleId={expandedVehicleId}
+                        setExpandedVehicleId={setExpandedVehicleId}
+                        showModal={showModal}
+                        setShowModal={setShowModal}
+                        selectedVehicle={selectedVehicle}
+                        setSelectedVehicle={setSelectedVehicle}
+                        selectedSession={selectedSession}
+                        setSelectedSession={setSelectedSession}
+                        form={form}
+                        setForm={setForm}
+                        handleConfirm={handleConfirm}
+                        modelOptions={modelOptions}
+                        filtered={filtered}
+                        isBooked={isBooked}
+                        modalTotalPrice={modalTotalPrice}
+                        availableLocations={availableLocations}
+                        refreshVehicles={refreshVehicles}
+                      />
+                    )}
+                    {currentPage === "Selling" && <Selling />}
+                    {currentPage === "Account" && (
+                      <Account setCurrentPage={setCurrentPage} />
+                    )}
+                    {currentPage === "AccountSignIn" && (
+                      <AccountSignIn setCurrentPage={setCurrentPage} />
+                    )}
+                    {currentPage === "AccountSignUp" && (
+                      <AccountSignUp setCurrentPage={setCurrentPage} />
+                    )}
+                    {currentPage === "RiceMarket" && <RiceMarket />}
+                  </main>
+                </div>
               </div>
-            </div>
-          }
-        />
+            }
+          />
 
-        {/* Admin Routes */}
+          {/* Admin Routes */}
 
-        <Route path="/login" element={<AdminLogin />} />
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute>
-              <AdminAreaRoutes />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminAreaRoutes />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

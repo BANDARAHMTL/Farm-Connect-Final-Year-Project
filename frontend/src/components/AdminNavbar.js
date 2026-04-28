@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function AdminNavbar({ admin }) {
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
 
   function handleLogout() {
     localStorage.removeItem("admin_token");
@@ -39,6 +41,34 @@ export default function AdminNavbar({ admin }) {
         </span>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <button
+          onClick={toggleTheme}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 36,
+            height: 36,
+            background: "var(--g050)",
+            border: "1px solid var(--border)",
+            borderRadius: 8,
+            color: "var(--n600)",
+            cursor: "pointer",
+            fontSize: "1rem",
+            transition: "all 0.15s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--g100)";
+            e.currentTarget.style.borderColor = "var(--g300)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--g050)";
+            e.currentTarget.style.borderColor = "var(--border)";
+          }}
+          title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {isDark ? "☀️" : "🌙"}
+        </button>
         <div style={{
           display: "flex", alignItems: "center", gap: 10,
           padding: "6px 14px 6px 6px",

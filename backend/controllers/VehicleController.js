@@ -5,6 +5,7 @@
 
 import Controller from './Controller.js';
 import Vehicle from '../models/Vehicle.js';
+import pool from '../config/db.js';
 
 class VehicleController extends Controller {
   constructor() {
@@ -240,32 +241,169 @@ class VehicleController extends Controller {
 const vehicleController = new VehicleController();
 
 // Export handler functions for routes
-export const listVehicles = (req, res) => {
-  const result = vehicleController.getAll();
-  res.status(result.statusCode).json(result);
+export const listVehicles = async (req, res) => {
+  try {
+    const conn = await pool.getConnection();
+    const [vehicles] = await conn.query('SELECT * FROM vehicles ORDER BY created_at DESC');
+    conn.release();
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: `Found ${vehicles.length} vehicle(s)`,
+      data: vehicles
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error fetching vehicles',
+      error: error.message
+    });
+  }
 };
 
-export const getVehicle = (req, res) => {
-  const id = parseInt(req.params.id);
-  const result = vehicleController.getById(id);
-  res.status(result.statusCode).json(result);
+export const getVehicle = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const conn = await pool.getConnection();
+    const [vehicles] = await conn.query('SELECT * FROM vehicles WHERE id = ?', [id]);
+    conn.release();
+    
+    if (vehicles.length === 0) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: 'Vehicle not found'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Vehicle found',
+      data: vehicles[0]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error fetching vehicle',
+      error: error.message
+    });
+  }
 };
 
-export const addVehicle = (req, res) => {
-  const result = vehicleController.create(req.body);
-  res.status(result.statusCode).json(result);
+export const addVehicle = async (req, res) => {
+  try {
+    const { vehicleNumber, vehicleType, model, capacity, status, ownerName, ownerMobile, regNumber, rating, reviews, location, pricePerAcre } = req.body;
+    const imageUrl = req.file ? `/uploads/vehicles/${req.file.filename}` : null;
+    
+    const conn = await pool.getConnection();
+    const [result] = await conn.query(
+      `INSERT INTO vehicles (vehicle_number, vehicle_type, model, capacity, status, owner_name, owner_mobile, reg_number, rating, reviews, location, price_per_acre, image_url)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [vehicleNumber, vehicleType, model, capacity, status, ownerName, ownerMobile, regNumber, rating || 0, reviews || 0, location, pricePerAcre, imageUrl]
+    );
+    
+    const [newVehicle] = await conn.query('SELECT * FROM vehicles WHERE id = ?', [result.insertId]);
+    conn.release();
+    
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Vehicle added successfully',
+      data: newVehicle[0]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error adding vehicle',
+      error: error.message
+    });
+  }
 };
 
-export const updateVehicle = (req, res) => {
-  const id = parseInt(req.params.id);
-  const result = vehicleController.update(id, req.body);
-  res.status(result.statusCode).json(result);
+export const updateVehicle = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { vehicleNumber, vehicleType, model, capacity, status, ownerName, ownerMobile, regNumber, rating, reviews, location, pricePerAcre } = req.body;
+    const imageUrl = req.file ? `/uploads/vehicles/${req.file.filename}` : undefined;
+    
+    const conn = await pool.getConnection();
+    
+    // Build update query
+    let updateFields = [];
+    let updateValues = [];
+    
+    if (vehicleNumber) { updateFields.push('vehicle_number = ?'); updateValues.push(vehicleNumber); }
+    if (vehicleType) { updateFields.push('vehicle_type = ?'); updateValues.push(vehicleType); }
+    if (model) { updateFields.push('model = ?'); updateValues.push(model); }
+    if (capacity) { updateFields.push('capacity = ?'); updateValues.push(capacity); }
+    if (status) { updateFields.push('status = ?'); updateValues.push(status); }
+    if (ownerName) { updateFields.push('owner_name = ?'); updateValues.push(ownerName); }
+    if (ownerMobile) { updateFields.push('owner_mobile = ?'); updateValues.push(ownerMobile); }
+    if (regNumber) { updateFields.push('reg_number = ?'); updateValues.push(regNumber); }
+    if (rating) { updateFields.push('rating = ?'); updateValues.push(rating); }
+    if (reviews) { updateFields.push('reviews = ?'); updateValues.push(reviews); }
+    if (location) { updateFields.push('location = ?'); updateValues.push(location); }
+    if (pricePerAcre) { updateFields.push('price_per_acre = ?'); updateValues.push(pricePerAcre); }
+    if (imageUrl) { updateFields.push('image_url = ?'); updateValues.push(imageUrl); }
+    
+    if (updateFields.length === 0) {
+      conn.release();
+      return res.status(400).json({
+        success: false,
+        statusCode: 400,
+        message: 'No fields to update'
+      });
+    }
+    
+    updateValues.push(id);
+    const query = `UPDATE vehicles SET ${updateFields.join(', ')} WHERE id = ?`;
+    
+    await conn.query(query, updateValues);
+    const [updatedVehicle] = await conn.query('SELECT * FROM vehicles WHERE id = ?', [id]);
+    conn.release();
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Vehicle updated successfully',
+      data: updatedVehicle[0]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error updating vehicle',
+      error: error.message
+    });
+  }
 };
 
-export const deleteVehicle = (req, res) => {
-  const id = parseInt(req.params.id);
-  const result = vehicleController.delete(id);
-  res.status(result.statusCode).json(result);
+export const deleteVehicle = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    
+    const conn = await pool.getConnection();
+    await conn.query('DELETE FROM vehicles WHERE id = ?', [id]);
+    conn.release();
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Vehicle deleted successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error deleting vehicle',
+      error: error.message
+    });
+  }
 };
 
 // Export controller class

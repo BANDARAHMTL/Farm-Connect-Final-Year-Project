@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 const PAGES = [
   { id: "Home",        label: "HOME"        },
@@ -10,6 +11,7 @@ const PAGES = [
 
 export default function NavBar({ currentPage, setCurrentPage }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <>
@@ -53,6 +55,36 @@ export default function NavBar({ currentPage, setCurrentPage }) {
 
           {/* Right side — sign in / sign up / admin */}
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 36,
+                height: 36,
+                background: "rgba(255, 255, 255, 0.1)",
+                border: "1.5px solid rgba(255, 255, 255, 0.2)",
+                borderRadius: 8,
+                color: "#f5c518",
+                cursor: "pointer",
+                fontSize: "1rem",
+                transition: "all 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.15)";
+                e.currentTarget.style.borderColor = "#f5c518";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+              }}
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDark ? "☀️" : "🌙"}
+            </button>
 
             {/* Admin Login — opens /login route */}
             <a href="/login" style={{

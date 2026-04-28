@@ -34,7 +34,7 @@ export default function Bookings() {
   async function load() {
     try {
       const res = await api.get("/bookings");
-      setBookings(res.data || []);
+      setBookings(res.data?.data || []);
     } catch(err) { console.error(err); }
     finally { setLoading(false); }
   }

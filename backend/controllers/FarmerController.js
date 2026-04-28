@@ -5,6 +5,9 @@
 
 import Controller from './Controller.js';
 import Farmer from '../models/Farmer.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import pool from '../config/db.js';
 
 class FarmerController extends Controller {
   constructor() {
@@ -250,15 +253,128 @@ class FarmerController extends Controller {
 const farmerController = new FarmerController();
 
 // Export handler functions for routes
-export const registerFarmer = (req, res) => {
-  const result = farmerController.create(req.body);
-  res.status(result.statusCode).json(result);
+export const registerFarmer = async (req, res) => {
+  try {
+    const { name, email, password, mobile, nic, address, land_number } = req.body;
+    
+    // Validate required fields
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and password are required'
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Insert into database
+    const conn = await pool.getConnection();
+    try {
+      const [result] = await conn.query(
+        `INSERT INTO farmers (name, email, password, mobile, nic, address, land_number) 
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [name || '', email, hashedPassword, mobile || null, nic || null, address || null, land_number || null]
+      );
+      
+      // Return the created farmer
+      const [newFarmer] = await conn.query(
+        'SELECT * FROM farmers WHERE id = ?',
+        [result.insertId]
+      );
+      
+      conn.release();
+      
+      const { password: _, ...farmerData } = newFarmer[0];
+      res.status(201).json({
+        success: true,
+        message: 'Farmer registered successfully',
+        data: farmerData
+      });
+    } catch (dbError) {
+      conn.release();
+      
+      // Handle duplicate email
+      if (dbError.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({
+          success: false,
+          message: 'Email already registered'
+        });
+      }
+      throw dbError;
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Registration error',
+      error: error.message
+    });
+  }
 };
 
-export const farmerLogin = (req, res) => {
-  const { email, password } = req.body;
-  const result = farmerController.findByEmail(email);
-  res.status(result.statusCode).json(result);
+export const farmerLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and password required'
+      });
+    }
+
+    // Query database for farmer
+    const conn = await pool.getConnection();
+    const [farmers] = await conn.query(
+      'SELECT * FROM farmers WHERE email = ?',
+      [email]
+    );
+    conn.release();
+
+    if (farmers.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+    }
+
+    const farmer = farmers[0];
+
+    // Compare passwords using bcrypt
+    const passwordMatch = await bcrypt.compare(password, farmer.password);
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        farmerId: farmer.id,
+        email: farmer.email,
+        role: 'farmer'
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    // Return token and farmer data (excluding password)
+    const { password: _, ...farmerData } = farmer;
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      token,
+      farmer: farmerData
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Login error',
+      error: error.message
+    });
+  }
 };
 
 export const getFarmerProfile = (req, res) => {

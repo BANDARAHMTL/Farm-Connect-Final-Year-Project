@@ -5,6 +5,9 @@
 
 import Controller from './Controller.js';
 import Admin from '../models/Admin.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import pool from '../config/db.js';
 
 class AdminController extends Controller {
   constructor() {
@@ -240,32 +243,219 @@ class AdminController extends Controller {
 const adminController = new AdminController();
 
 // Export handler functions for routes
-export const registerAdmin = (req, res) => {
-  const result = adminController.create(req.body);
-  res.status(result.statusCode).json(result);
+export const registerAdmin = async (req, res) => {
+  try {
+    const { username, password, full_name, email, role } = req.body;
+    
+    // Validate required fields
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username and password are required'
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Insert into database
+    const conn = await pool.getConnection();
+    try {
+      const [result] = await conn.query(
+        `INSERT INTO admins (username, password, full_name, email, role) 
+         VALUES (?, ?, ?, ?, ?)`,
+        [username, hashedPassword, full_name || '', email || '', role || 'admin']
+      );
+      
+      // Return the created admin
+      const [newAdmin] = await conn.query(
+        'SELECT * FROM admins WHERE id = ?',
+        [result.insertId]
+      );
+      
+      conn.release();
+      
+      const { password: _, ...adminData } = newAdmin[0];
+      res.status(201).json({
+        success: true,
+        message: 'Admin registered successfully',
+        data: adminData
+      });
+    } catch (dbError) {
+      conn.release();
+      
+      // Handle duplicate username/email
+      if (dbError.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({
+          success: false,
+          message: 'Username or email already exists'
+        });
+      }
+      throw dbError;
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Registration error',
+      error: error.message
+    });
+  }
 };
 
-export const adminLogin = (req, res) => {
-  const { username, password } = req.body;
-  const result = adminController.findByUsername(username);
-  res.status(result.statusCode).json(result);
+export const adminLogin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username and password required'
+      });
+    }
+
+    // Query database for admin
+    const conn = await pool.getConnection();
+    const [admins] = await conn.query(
+      'SELECT * FROM admins WHERE username = ?',
+      [username]
+    );
+    conn.release();
+
+    if (admins.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Invalid username or password'
+      });
+    }
+
+    const admin = admins[0];
+
+    // Compare passwords using bcrypt
+    const passwordMatch = await bcrypt.compare(password, admin.password);
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid username or password'
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        adminId: admin.id,
+        username: admin.username,
+        role: admin.role || 'admin'
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    // Return token and admin data (excluding password)
+    const { password: _, ...adminData } = admin;
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      token,
+      admin: adminData
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Login error',
+      error: error.message
+    });
+  }
 };
 
-export const listFarmers = (req, res) => {
-  const result = adminController.getAll();
-  res.status(result.statusCode).json(result);
+export const listFarmers = async (req, res) => {
+  try {
+    const conn = await pool.getConnection();
+    const [farmers] = await conn.query('SELECT id, farmer_id, name, email, mobile, nic, address, land_number, created_at FROM farmers ORDER BY created_at DESC');
+    conn.release();
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: `Found ${farmers.length} farmer(s)`,
+      data: farmers
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error fetching farmers',
+      error: error.message
+    });
+  }
 };
 
-export const updateFarmer = (req, res) => {
-  const id = parseInt(req.params.id);
-  const result = adminController.update(id, req.body);
-  res.status(result.statusCode).json(result);
+export const updateFarmer = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { name, email, mobile, nic, address, land_number } = req.body;
+    
+    const conn = await pool.getConnection();
+    await conn.query(
+      'UPDATE farmers SET name = ?, email = ?, mobile = ?, nic = ?, address = ?, land_number = ? WHERE id = ?',
+      [name, email, mobile, nic, address, land_number, id]
+    );
+    
+    const [updatedFarmers] = await conn.query('SELECT id, farmer_id, name, email, mobile, nic, address, land_number, created_at FROM farmers WHERE id = ?', [id]);
+    conn.release();
+    
+    if (updatedFarmers.length === 0) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: 'Farmer not found'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Farmer updated successfully',
+      data: updatedFarmers[0]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error updating farmer',
+      error: error.message
+    });
+  }
 };
 
-export const deleteFarmer = (req, res) => {
-  const id = parseInt(req.params.id);
-  const result = adminController.delete(id);
-  res.status(result.statusCode).json(result);
+export const deleteFarmer = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    
+    const conn = await pool.getConnection();
+    const [deletedResult] = await conn.query('DELETE FROM farmers WHERE id = ?', [id]);
+    conn.release();
+    
+    if (deletedResult.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: 'Farmer not found'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Farmer deleted successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Error deleting farmer',
+      error: error.message
+    });
+  }
 };
 
 // Export controller class

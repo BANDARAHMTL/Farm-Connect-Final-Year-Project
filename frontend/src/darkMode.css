@@ -1,0 +1,341 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DARK MODE THEME STYLES - COMPREHENSIVE
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Root dark mode configuration */
+html[data-theme="dark"],
+body.dark-mode {
+  background-color: #0f1419 !important;
+  color: #f0f5f0 !important;
+}
+
+html[data-theme="dark"] {
+  background-color: #0f1419 !important;
+}
+
+html[data-theme="dark"] body {
+  background-color: #0f1419 !important;
+  color: #f0f5f0 !important;
+}
+
+body.dark-mode {
+  background-color: #0f1419 !important;
+  color: #f0f5f0 !important;
+}
+
+/* Dark mode for all elements */
+html[data-theme="dark"] *,
+body.dark-mode * {
+  color-scheme: dark;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   APP CONTAINERS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] .app,
+body.dark-mode .app {
+  background-color: #0f1419 !important;
+  color: #f0f5f0 !important;
+}
+
+html[data-theme="dark"] .app-layout,
+body.dark-mode .app-layout {
+  background-color: #0f1419 !important;
+}
+
+html[data-theme="dark"] .main-content,
+body.dark-mode .main-content {
+  background-color: #0f1419 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   ALL TEXT ELEMENTS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html[data-theme="dark"] p,
+html[data-theme="dark"] span,
+html[data-theme="dark"] div,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode div {
+  color: #f0f5f0 !important;
+}
+
+/* Override inline color styles - light to dark */
+html[data-theme="dark"] [style*="color: #0a2e1a"],
+html[data-theme="dark"] [style*="color: #1a6e3e"],
+html[data-theme="dark"] [style*="color: #2e4438"],
+html[data-theme="dark"] [style*="color: #6b8577"],
+html[data-theme="dark"] [style*="color: #97b3a4"],
+body.dark-mode [style*="color: #0a2e1a"],
+body.dark-mode [style*="color: #1a6e3e"],
+body.dark-mode [style*="color: #2e4438"],
+body.dark-mode [style*="color: #6b8577"],
+body.dark-mode [style*="color: #97b3a4"] {
+  color: #f0f5f0 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   NAVBAR & HEADERS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] div[style*="background: #fff"],
+html[data-theme="dark"] header[style*="background: #fff"],
+html[data-theme="dark"] nav[style*="background: #fff"],
+body.dark-mode div[style*="background: #fff"],
+body.dark-mode header[style*="background: #fff"],
+body.dark-mode nav[style*="background: #fff"] {
+  background-color: #1a1f28 !important;
+  border-color: #333842 !important;
+}
+
+html[data-theme="dark"] nav[style*="linear-gradient"],
+body.dark-mode nav[style*="linear-gradient"] {
+  background-color: #1a1f28 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   BORDERS & DIVIDERS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] [style*="#e0eeea"],
+html[data-theme="dark"] [style*="#d1e8da"],
+html[data-theme="dark"] [style*="#c3d6cc"],
+html[data-theme="dark"] [style*="#ddeae2"],
+html[data-theme="dark"] [style*="#eef5f0"],
+body.dark-mode [style*="#e0eeea"],
+body.dark-mode [style*="#d1e8da"],
+body.dark-mode [style*="#c3d6cc"],
+body.dark-mode [style*="#ddeae2"],
+body.dark-mode [style*="#eef5f0"] {
+  border-color: #333842 !important;
+  background-color: #1a1f28 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   FORM INPUTS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select,
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #1a1f28 !important;
+  color: #f0f5f0 !important;
+  border-color: #434d59 !important;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder,
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #7a8287 !important;
+}
+
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] textarea:focus,
+html[data-theme="dark"] select:focus,
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+  background-color: #252d38 !important;
+  border-color: #f5c518 !important;
+  box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15) !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] button,
+html[data-theme="dark"] [role="button"],
+body.dark-mode button,
+body.dark-mode [role="button"] {
+  background-color: #1a1f28 !important;
+  color: #f0f5f0 !important;
+  border-color: #434d59 !important;
+}
+
+html[data-theme="dark"] button:hover,
+html[data-theme="dark"] [role="button"]:hover,
+body.dark-mode button:hover,
+body.dark-mode [role="button"]:hover {
+  background-color: #252d38 !important;
+  border-color: #f5c518 !important;
+  color: #f0f5f0 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   CONTAINERS & CARDS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] [class*="card"],
+body.dark-mode .card,
+body.dark-mode [class*="card"] {
+  background-color: #1a1f28 !important;
+  color: #f0f5f0 !important;
+  border-color: #333842 !important;
+}
+
+html[data-theme="dark"] .modal,
+html[data-theme="dark"] [role="dialog"],
+body.dark-mode .modal,
+body.dark-mode [role="dialog"] {
+  background-color: #1a1f28 !important;
+  color: #f0f5f0 !important;
+  border-color: #434d59 !important;
+}
+
+html[data-theme="dark"] .modal-backdrop,
+body.dark-mode .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   TABLES
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] table,
+body.dark-mode table {
+  background-color: #1a1f28 !important;
+  color: #f0f5f0 !important;
+  border-color: #333842 !important;
+}
+
+html[data-theme="dark"] thead,
+body.dark-mode thead {
+  background-color: #252d38 !important;
+  color: #f0f5f0 !important;
+  border-color: #434d59 !important;
+}
+
+html[data-theme="dark"] th,
+body.dark-mode th {
+  color: #f0f5f0 !important;
+  border-color: #434d59 !important;
+  background-color: #252d38 !important;
+}
+
+html[data-theme="dark"] td,
+body.dark-mode td {
+  color: #aeb4bd !important;
+  border-color: #333842 !important;
+}
+
+html[data-theme="dark"] tbody tr:hover,
+body.dark-mode tbody tr:hover {
+  background-color: #252d38 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   NAVIGATION
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] nav,
+body.dark-mode nav {
+  background-color: #1a1f28 !important;
+  color: #f0f5f0 !important;
+  border-color: #434d59 !important;
+}
+
+html[data-theme="dark"] nav a,
+html[data-theme="dark"] nav button,
+body.dark-mode nav a,
+body.dark-mode nav button {
+  color: #aeb4bd !important;
+}
+
+html[data-theme="dark"] nav a:hover,
+html[data-theme="dark"] nav button:hover,
+body.dark-mode nav a:hover,
+body.dark-mode nav button:hover {
+  color: #f5c518 !important;
+  background-color: rgba(245, 197, 24, 0.1) !important;
+}
+
+html[data-theme="dark"] nav a.active,
+html[data-theme="dark"] nav button.active,
+body.dark-mode nav a.active,
+body.dark-mode nav button.active {
+  color: #f5c518 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   ADMIN ELEMENTS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] .admin-navbar,
+html[data-theme="dark"] .admin-sidebar,
+body.dark-mode .admin-navbar,
+body.dark-mode .admin-sidebar {
+  background-color: #1a1f28 !important;
+  border-color: #333842 !important;
+}
+
+html[data-theme="dark"] .admin-sidebar a,
+html[data-theme="dark"] .admin-sidebar button,
+body.dark-mode .admin-sidebar a,
+body.dark-mode .admin-sidebar button {
+  color: #aeb4bd !important;
+}
+
+html[data-theme="dark"] .admin-sidebar a:hover,
+html[data-theme="dark"] .admin-sidebar button:hover,
+body.dark-mode .admin-sidebar a:hover,
+body.dark-mode .admin-sidebar button:hover {
+  background-color: rgba(245, 197, 24, 0.1) !important;
+  color: #f5c518 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   CHECKBOXES & RADIO BUTTONS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] input[type="checkbox"],
+html[data-theme="dark"] input[type="radio"],
+body.dark-mode input[type="checkbox"],
+body.dark-mode input[type="radio"] {
+  accent-color: #f5c518 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   SCROLLBARS
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="dark"] ::-webkit-scrollbar,
+body.dark-mode ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-track,
+body.dark-mode ::-webkit-scrollbar-track {
+  background-color: #1a1f28;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb,
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: #434d59;
+  border-radius: 5px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: #f5c518;
+}

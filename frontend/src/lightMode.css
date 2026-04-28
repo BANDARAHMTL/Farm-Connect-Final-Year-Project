@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   LIGHT MODE THEME STYLES (Default)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+html[data-theme="light"],
+html[data-theme="light"] body,
+body.light-mode {
+  --bg-primary: #f4fbf6;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f9fdfb;
+  --text-primary: #0a2e1a;
+  --text-secondary: #2e4438;
+  --text-tertiary: #6b8577;
+  --border-color: #ddeae2;
+  --border-light: #c3d6cc;
+  
+  background-color: #f4fbf6 !important;
+  color: #0a2e1a !important;
+}
+
+html[data-theme="light"] body,
+body.light-mode {
+  background-color: #f4fbf6 !important;
+  color: #0a2e1a !important;
+}
+
+/* Light mode text colors */
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5,
+html[data-theme="light"] h6,
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode h4,
+body.light-mode h5,
+body.light-mode h6 {
+  color: #0a2e1a !important;
+}
+
+/* Light mode form elements */
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select,
+body.light-mode input,
+body.light-mode textarea,
+body.light-mode select {
+  background-color: #ffffff !important;
+  color: #0a2e1a !important;
+  border-color: #ddeae2 !important;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder,
+body.light-mode input::placeholder,
+body.light-mode textarea::placeholder {
+  color: #97b3a4 !important;
+}
+
+/* Light mode containers */
+html[data-theme="light"] [style*="background: #fff"],
+body.light-mode [style*="background: #fff"] {
+  background-color: #ffffff !important;
+  color: #0a2e1a !important;
+}
+
+html[data-theme="light"] [style*="color: #2e4438"],
+body.light-mode [style*="color: #2e4438"] {
+  color: #2e4438 !important;
+}
+
+html[data-theme="light"] [style*="color: #0a2e1a"],
+body.light-mode [style*="color: #0a2e1a"] {
+  color: #0a2e1a !important;
+}
+
+html[data-theme="light"] [style*="color: #6b8577"],
+body.light-mode [style*="color: #6b8577"] {
+  color: #6b8577 !important;
+}
+
+/* Light mode borders */
+html[data-theme="light"] [style*="#d1e8da"],
+body.light-mode [style*="#d1e8da"] {
+  background-color: #e6f7ed !important;
+}
+
+html[data-theme="light"] [style*="#c3d6cc"],
+body.light-mode [style*="#c3d6cc"] {
+  border-color: #ddeae2 !important;
+  background-color: transparent !important;
+}
+
+html[data-theme="light"] [style*="borderBottom: \"1px solid #e0eeea\""],
+body.light-mode div[style*="borderBottom"] {
+  border-bottom-color: #ddeae2 !important;
+}
+
+/* Light mode tables */
+html[data-theme="light"] table,
+body.light-mode table {
+  background-color: #ffffff !important;
+  color: #0a2e1a !important;
+}
+
+html[data-theme="light"] th,
+body.light-mode th {
+  color: #2e4438 !important;
+}
+
+html[data-theme="light"] td,
+body.light-mode td {
+  color: #0a2e1a !important;
+}
+
+/* Reset any dark mode specific styling for light mode app */
+html[data-theme="light"] .app,
+body.light-mode .app {
+  background-color: #f4fbf6 !important;
+  color: #0a2e1a !important;
+}

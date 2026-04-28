@@ -10,7 +10,7 @@ export default function Users() {
 
   useEffect(() => { load(); }, []);
   async function load() {
-    try { const res = await api.get("/admin/farmers"); setUsers(res.data); }
+    try { const res = await api.get("/admin/farmers"); setUsers(res.data?.data || []); }
     catch (err) { console.error(err); }
     finally { setLoading(false); }
   }
