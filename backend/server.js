@@ -9,7 +9,7 @@ import adminAuth  from "./middleware/adminAuth.js";
 import farmerRoutes      from "./routes/farmer.routes.js";
 import adminRoutes       from "./routes/admin.routes.js";
 import vehicleRoutes     from "./routes/vehicle.routes.js";
-// import millRoutes        from "./routes/riceMill.routes.js";
+import millRoutes        from "./routes/riceMill.routes.js";
 // import riceTypeRoutes    from "./routes/riceType.routes.js";
 // import marketplaceRoutes from "./routes/marketplace.routes.js";
 import bookingRoutes     from "./routes/booking.routes.js";
@@ -44,8 +44,8 @@ console.log(`📂 Serving uploads from: ${uploadsPath}`);
 app.use("/api/farmers",      farmerRoutes);
 app.use("/api/admin",        adminRoutes);
 app.use("/api/vehicles",     vehicleRoutes);
-// app.use("/api/rice-mills",   millRoutes);
-// app.use("/api/rices",        millRoutes);       // legacy alias
+app.use("/api/rice-mills",   millRoutes);
+app.use("/api/rices",        millRoutes);       // legacy alias
 // app.use("/api/rice-types",   riceTypeRoutes);
 // app.use("/api/marketplace",  marketplaceRoutes);
 app.use("/api/bookings",     bookingRoutes);

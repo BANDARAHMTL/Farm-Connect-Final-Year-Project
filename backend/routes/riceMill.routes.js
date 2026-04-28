@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   getAllRiceMills, getAllRiceMillsAdmin, getRiceMillById,
   addRiceMill, updateRiceMill, deleteRiceMill
-} from "../controllers/riceMill.controller.js";
+} from "../controllers/RiceMillController.js";
 import adminAuth from "../middleware/adminAuth.js";
 import { uploadRiceMill } from "../middleware/upload.js";
 
