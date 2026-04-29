@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import api from "../api/api";
 import riceMillService from "../services/riceMillService";
+import { getImageUrl } from "../utils/imageUrl";
 
 const SELL_SLIDES = [
   "https://th.bing.com/th/id/R.2e3f4fb766f49b9993676b2f084dd569?rik=JcAXvc60fahlCg&pid=ImgRaw&r=0",
@@ -56,8 +57,13 @@ export default function Selling() {
 
   const checkPrices = useCallback(async()=>{
     if(!canCheck)return; setLoading(true);
-    try { const r=await riceMillService.getOffers(paddyType,stockKg); setOffers(r); setStep(1); }
-    catch{ alert("Failed to fetch prices."); } finally{ setLoading(false); }
+    try { 
+      const r=await riceMillService.getOffers(paddyType,stockKg); 
+      setOffers(r); 
+      setStep(1); // Show all offers for user to compare and select
+    }
+    catch{ alert("Failed to fetch prices."); } 
+    finally{ setLoading(false); }
   },[paddyType,stockKg,canCheck]);
 
   function selectMill(m){ setSM(m); setStep(2); }
@@ -199,23 +205,49 @@ export default function Selling() {
         {/* ══ STEP 1 ══ */}
         {step===1 && offers && (
           <div>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"18px 24px",marginBottom:24}}>
-              <div>
-                <div style={{fontWeight:800,color:"#fff",fontSize:"1rem"}}>Live Offers — <span style={{color:"#f5c518"}}>{offers.paddyType}</span></div>
-                <div style={{color:"rgba(255,255,255,0.4)",fontSize:"0.8rem",marginTop:2}}>{Number(offers.stockKg).toLocaleString()} kg · {offers.mills.length} mill{offers.mills.length!==1?"s":""}</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:20,marginBottom:24}}>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                  <div style={{fontSize:"1.1rem"}}>🏭</div>
+                  <div>
+                    <div style={{fontWeight:800,color:"#fff",fontSize:"1.05rem"}}>Compare Rice Mill Prices</div>
+                    <div style={{color:"rgba(255,255,255,0.4)",fontSize:"0.8rem",marginTop:2}}>
+                      <strong>{offers.mills.length}</strong> mill{offers.mills.length!==1?"s":""} offering <strong>{offers.paddyType}</strong> • <strong>{Number(offers.stockKg).toLocaleString()} kg</strong> stock
+                    </div>
+                  </div>
+                </div>
+                <div style={{background:"rgba(245,197,24,0.08)",border:"1px solid rgba(245,197,24,0.2)",borderRadius:10,padding:"12px 14px",fontSize:"0.78rem",color:"rgba(245,197,24,0.85)",display:"flex",alignItems:"center",gap:8}}>
+                  <span>💡</span>
+                  <div>View all available prices below. The mill with the <strong>highest price</strong> (marked with ⭐) offers the best value. Choose the mill that best suits your needs.</div>
+                </div>
               </div>
-              <button onClick={()=>setStep(0)} style={{background:"rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.7)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"9px 18px",fontSize:"0.82rem",fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+              <button onClick={()=>setStep(0)} style={{background:"rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.7)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"10px 20px",fontSize:"0.82rem",fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
                 ← Change Details
               </button>
             </div>
             {offers.mills.length===0
               ? <div style={{textAlign:"center",padding:"60px",background:"rgba(255,255,255,0.03)",borderRadius:20,border:"1px dashed rgba(255,255,255,0.1)"}}>
                   <div style={{fontSize:"3rem",marginBottom:12}}>🏭</div>
-                  <div style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>No offers for {offers.paddyType}</div>
-                  <button onClick={()=>setStep(0)} style={{marginTop:16,background:"rgba(255,255,255,0.06)",color:"#fff",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"10px 20px",cursor:"pointer",fontFamily:"inherit"}}>← Try Another Type</button>
+                  <div style={{fontWeight:700,color:"rgba(255,255,255,0.5)",marginBottom:8}}>No offers for {offers.paddyType}</div>
+                  <p style={{color:"rgba(255,255,255,0.35)",fontSize:"0.8rem",marginBottom:20}}>No rice mills are currently buying this type. Try selecting a different paddy type.</p>
+                  <button onClick={()=>setStep(0)} style={{background:"rgba(255,255,255,0.06)",color:"#fff",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 24px",cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>← Try Another Type</button>
                 </div>
-              : <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:20}}>
-                  {offers.mills.map((mill,i)=><MillCard key={i} mill={mill} isBest={i===0} isSelected={selectedMill?.id===mill.id} onSelect={()=>selectMill(mill)}/>)}
+              : <div>
+                  <div style={{background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"16px",marginBottom:16}}>
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:12}}>
+                      {offers.mills.map((m,i)=>(
+                        <div key={i} style={{background:i===0?"rgba(245,197,24,0.1)":"rgba(255,255,255,0.03)",border:i===0?"1.5px solid rgba(245,197,24,0.3)":"1px solid rgba(255,255,255,0.08)",borderRadius:10,padding:"12px",textAlign:"center",cursor:"pointer",transition:"all 0.2s",transform:selectedMill?.id===m.id?"scale(1.05)":"scale(1)"}}>
+                          {i===0 && <div style={{fontSize:"0.65rem",fontWeight:800,color:"#f5c518",marginBottom:4}}>⭐ BEST</div>}
+                          <div style={{fontWeight:700,color:"#f1f5f2",marginBottom:2,fontSize:"0.85rem"}}>{m.name||m.millName}</div>
+                          <div style={{fontSize:"1.2rem",fontWeight:900,color:i===0?"#f5c518":"#4ade80",marginBottom:2}}>Rs {m.pricePerKg}</div>
+                          <div style={{color:"rgba(255,255,255,0.4)",fontSize:"0.72rem"}}>Per kg</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:20}}>
+                    {offers.mills.map((mill,i)=><MillCard key={i} mill={mill} isBest={i===0} isSelected={selectedMill?.id===mill.id} onSelect={()=>selectMill(mill)}/>)}
+                  </div>
                 </div>
             }
           </div>
@@ -385,25 +417,66 @@ function PriceList({paddyTypes}){
 
 function MillCard({mill,isBest,isSelected,onSelect}){
   const [hov,setHov]=useState(false);
+  const imageUrl = getImageUrl(mill.imageUrl);
   return (
     <div onClick={onSelect}
       onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:isSelected?"rgba(74,222,128,0.06)":hov?"rgba(255,255,255,0.04)":"#111a13",border:isSelected?"1.5px solid rgba(74,222,128,0.4)":isBest?"1.5px solid rgba(245,197,24,0.3)":"1px solid #1e2e22",borderRadius:18,overflow:"hidden",cursor:"pointer",transition:"all 0.18s",position:"relative"}}>
-      {isBest && <div style={{background:"linear-gradient(90deg,#134d2e,#1a6e3e)",padding:"5px 0",textAlign:"center",fontSize:"0.65rem",fontWeight:800,color:"#f5c518",letterSpacing:"0.1em"}}>⭐ BEST PRICE</div>}
-      {mill.imageUrl
-        ? <div style={{height:120,overflow:"hidden",position:"relative"}}><img src={mill.imageUrl} alt="" style={{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(0.6)"}}/><div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,0.6),transparent)"}}/></div>
-        : <div style={{height:100,backgroundImage:`url(${MILL_IMG})`,backgroundSize:"cover",backgroundPosition:"center",filter:"brightness(0.72)"}}/>
-      }
-      <div style={{padding:"16px 18px"}}>
-        {isSelected && <div style={{position:"absolute",top:10,right:10,width:24,height:24,borderRadius:"50%",background:"#4ade80",display:"flex",alignItems:"center",justifyContent:"center",color:"#0a0e0b",fontSize:"0.75rem",fontWeight:900}}>✓</div>}
-        <h4 style={{margin:"0 0 3px",fontWeight:800,color:"#fff",fontSize:"0.95rem"}}>{mill.name||mill.millName}</h4>
-        <p style={{margin:"0 0 10px",color:"rgba(255,255,255,0.4)",fontSize:"0.78rem"}}>📍 {mill.location}</p>
-        <div style={{background:isBest?"linear-gradient(135deg,#134d2e,#1a6e3e)":"rgba(255,255,255,0.05)",borderRadius:10,padding:"12px 14px",marginBottom:12,border:isBest?"none":"1px solid rgba(255,255,255,0.08)"}}>
-          <div style={{fontWeight:900,fontSize:"1.6rem",color:isBest?"#fff":"#4ade80",letterSpacing:"-0.5px"}}>Rs {mill.pricePerKg.toLocaleString()}<span style={{fontSize:"0.7rem",opacity:0.7}}>/kg</span></div>
-          <div style={{fontWeight:700,color:isBest?"rgba(167,243,208,0.8)":"rgba(255,255,255,0.5)",fontSize:"0.82rem",marginTop:2}}>💰 Total: Rs {mill.totalValue.toLocaleString()}</div>
+      style={{background:isSelected?"rgba(74,222,128,0.08)":"#111a13",border:isSelected?"2px solid #4ade80":isBest?"2px solid #f5c518":"1px solid #1e2e22",borderRadius:18,overflow:"hidden",cursor:"pointer",transition:"all 0.18s",position:"relative",display:"flex",flexDirection:"column",height:"100%",boxShadow:isBest?"0 0 24px rgba(245,197,24,0.2)":isSelected?"0 0 24px rgba(74,222,128,0.2)":hov?"0 8px 24px rgba(0,0,0,0.3)":"0 4px 12px rgba(0,0,0,0.2)"}}>
+      {/* Best Price Badge */}
+      {isBest && (
+        <div style={{background:"linear-gradient(90deg,#f5c518,#eab308)",padding:"6px 0",textAlign:"center",fontSize:"0.7rem",fontWeight:900,color:"#1a1a1a",letterSpacing:"0.15em",boxShadow:"0 4px 12px rgba(245,197,24,0.3)"}}>
+          ⭐ BEST PRICE
         </div>
-        <button onClick={e=>{e.stopPropagation();onSelect();}} style={{width:"100%",padding:"10px",background:isSelected?"#4ade80":"linear-gradient(135deg,#134d2e,#27a85c)",color:isSelected?"#0a0e0b":"#fff",border:"none",borderRadius:8,fontWeight:800,fontSize:"0.82rem",cursor:"pointer",fontFamily:"inherit"}}>
-          {isSelected?"✓ Selected":"Select This Mill →"}
+      )}
+      
+      {/* Image with hover effect */}
+      <div style={{height:140,position:"relative",background:"#0a0e0b",overflow:"hidden",flexShrink:0}}>
+        {imageUrl
+          ? <img src={imageUrl} alt={mill.name} style={{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(0.65) saturate(0.9)",transition:"all 0.3s",transform:hov?"scale(1.08) brightness(0.85)":"scale(1)"}} onError={e=>{e.target.style.display="none"}}/>
+          : <div style={{width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"4rem",opacity:0.3,background:"linear-gradient(135deg,#134d2e,#0d2e18)"}}>{MILL_IMG ? "🏭" : "📦"}</div>
+        }
+        {/* Gradient overlay */}
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6))"}}/>
+        
+        {/* Selection indicator */}
+        {isSelected && (
+          <div style={{position:"absolute",top:12,right:12,width:28,height:28,borderRadius:"50%",background:"#4ade80",border:"2px solid #fff",display:"flex",alignItems:"center",justifyContent:"center",color:"#0a0e0b",fontSize:"1rem",fontWeight:900,boxShadow:"0 0 12px rgba(74,222,128,0.5)"}}>
+            ✓
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div style={{padding:"14px 16px 16px",flex:1,display:"flex",flexDirection:"column"}}>
+        {/* Name & Location */}
+        <h4 style={{margin:"0 0 2px",fontWeight:800,color:"#f1f5f2",fontSize:"0.95rem",lineHeight:1.3}}>{mill.name||mill.millName}</h4>
+        <p style={{margin:"0 0 10px",color:"rgba(255,255,255,0.5)",fontSize:"0.77rem",display:"flex",alignItems:"center",gap:4}}>
+          📍 {mill.location}
+        </p>
+
+        {/* Price Highlight Box */}
+        <div style={{background:isBest?"linear-gradient(135deg,#f5c518,#eab308)":"linear-gradient(135deg,#134d2e,#1a6e3e)",borderRadius:10,padding:"12px 14px",marginBottom:12,border:isBest?"none":"1px solid rgba(74,222,128,0.3)"}}>
+          <div style={{fontSize:"0.65rem",fontWeight:700,color:isBest?"rgba(26,26,26,0.7)":"rgba(167,243,208,0.8)",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:3}}>Price Per Kg</div>
+          <div style={{fontWeight:900,fontSize:"1.5rem",color:isBest?"#1a1a1a":"#f1f5f2",letterSpacing:"-0.5px"}}>Rs {mill.pricePerKg.toLocaleString()}</div>
+        </div>
+
+        {/* Total Value */}
+        <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"10px 12px",marginBottom:12}}>
+          <div style={{fontSize:"0.65rem",fontWeight:600,color:"rgba(255,255,255,0.4)",marginBottom:2}}>Estimated Total</div>
+          <div style={{fontWeight:800,color:"#4ade80",fontSize:"1.05rem"}}>Rs {mill.totalValue.toLocaleString()}</div>
+        </div>
+
+        {/* Additional Info */}
+        {(mill.contact || mill.rating) && (
+          <div style={{background:"rgba(255,255,255,0.02)",borderRadius:8,padding:"10px 12px",marginBottom:12,fontSize:"0.75rem",color:"rgba(255,255,255,0.45)"}}>
+            {mill.rating && <div style={{marginBottom:4}}>⭐ Rating: <span style={{color:"rgba(255,255,255,0.6)"}}>{mill.rating.toFixed(1)}</span></div>}
+            {mill.contact && <div>📱 {mill.contact}</div>}
+          </div>
+        )}
+
+        {/* Selection Button */}
+        <button onClick={(e)=>{e.stopPropagation();onSelect();}} style={{width:"100%",padding:"12px",background:isSelected?"#4ade80":"linear-gradient(135deg,#134d2e,#27a85c)",color:isSelected?"#0a0e0b":"#fff",border:"none",borderRadius:8,fontWeight:800,fontSize:"0.82rem",cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",marginTop:"auto",boxShadow:isSelected?"0 4px 12px rgba(74,222,128,0.3)":"0 4px 12px rgba(39,168,92,0.2)"}}>
+          {isSelected?"✓ SELECTED":"Select Mill →"}
         </button>
       </div>
     </div>

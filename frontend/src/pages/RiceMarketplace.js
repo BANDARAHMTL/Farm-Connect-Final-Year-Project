@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import api from "../api/api";
 import OnlinePaymentForm from "../components/OnlinePaymentForm";
+import { getImageUrl } from "../utils/imageUrl";
 
 const MARKET_SLIDES = [
   "https://media.istockphoto.com/photos/rice-mill-picture-id525076865?k=6&m=525076865&s=612x612&w=0&h=YeK0GCHS9I4kOjETmI2J-NG9Kj44jUguhfAmZu1QLSw=",
@@ -173,7 +174,7 @@ export default function RiceMarketplace() {
                 <h3 style={{margin:"0 0 16px",color:"rgba(255,255,255,0.6)",fontSize:"0.75rem",textTransform:"uppercase",letterSpacing:"0.1em"}}>Order Summary</h3>
                 {/* Rice info */}
                 <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"14px",marginBottom:18}}>
-                  {selected.imageUrl&&<img src={selected.imageUrl} alt="" style={{width:"100%",height:90,objectFit:"cover",borderRadius:8,marginBottom:10,filter:"brightness(0.7)"}} onError={e=>{e.target.style.display="none"}}/>}
+                  {getImageUrl(selected.imageUrl)&&<img src={getImageUrl(selected.imageUrl)} alt="" style={{width:"100%",height:90,objectFit:"cover",borderRadius:8,marginBottom:10,filter:"brightness(0.7)"}} onError={e=>{e.target.style.display="none"}}/>}
                   <div style={{fontWeight:800,color:"#fff",marginBottom:2}}>{selected.riceTypeName} Rice</div>
                   <div style={{color:"rgba(255,255,255,0.4)",fontSize:"0.8rem",marginBottom:6}}>from {selected.millName}</div>
                   <div style={{color:"rgba(241,245,242,0.38)",fontSize:"0.75rem",marginBottom:2}}>📍 {selected.millLocation}</div>
@@ -348,12 +349,13 @@ function MarketHero({ count }) {
 
 function RiceCard({listing:l,onOrder}){
   const [hov,setHov]=useState(false);
+  const imageUrl = getImageUrl(l.imageUrl);
   return (
     <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{background:"#0e2318",border:"1px solid #1a3828",borderRadius:18,overflow:"hidden",display:"flex",flexDirection:"column",transition:"all 0.22s",boxShadow:hov?"0 16px 48px rgba(0,0,0,0.4), 0 0 0 2px rgba(59,130,246,0.4)":"0 4px 16px rgba(0,0,0,0.25)",transform:hov?"translateY(-4px)":"none"}}>
       {/* Image — full bright, no filter */}
       <div style={{height:220,position:"relative",background:"#0a1e12",overflow:"hidden",flexShrink:0}}>
-        {l.imageUrl
-          ? <img src={l.imageUrl} alt={l.riceTypeName} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center",display:"block",transition:"transform 0.45s",transform:hov?"scale(1.06)":"scale(1)"}} onError={e=>{e.target.style.display="none"}}/>
+        {imageUrl
+          ? <img src={imageUrl} alt={l.riceTypeName} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center",display:"block",transition:"transform 0.45s",transform:hov?"scale(1.06)":"scale(1)"}} onError={e=>{e.target.style.display="none"}}/>
           : <div style={{width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"3.5rem",opacity:0.5}}>🌾</div>
         }
         <div style={{position:"absolute",top:10,left:10,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(8px)",borderRadius:99,padding:"4px 12px",fontSize:"0.72rem",fontWeight:700,color:"#60a5fa",border:"1px solid rgba(96,165,250,0.2)"}}>{l.riceTypeName}</div>

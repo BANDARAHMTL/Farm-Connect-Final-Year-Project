@@ -44,6 +44,10 @@ export async function getSellingPrices(paddyType) {
 export async function getOffers(paddyType, stockKg) {
   const n = Number(stockKg) || 0;
   const prices = await getSellingPrices(paddyType);
+  
+  // Sort by price descending (highest first)
+  prices.sort((a, b) => b.pricePerKg - a.pricePerKg);
+  
   return {
     paddyType,
     stockKg: n,
