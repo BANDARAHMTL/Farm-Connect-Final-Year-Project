@@ -26,9 +26,24 @@ export default function RiceMarketplace() {
 
   useEffect(()=>{
     setLoading(true);
-    api.get("/rice/listings")
-      .then(r=>setListings(Array.isArray(r.data)?r.data:[]))
-      .catch(()=>setListings([]))
+    api.get("/marketplace")
+      .then(r=>{
+        // Map backend response to frontend format
+        const mapped = Array.isArray(r.data.data) ? r.data.data.map(item => ({
+          id: item.id,
+          riceTypeName: item.type_name,
+          millName: item.mill_name,
+          millLocation: item.mill_location,
+          basePricePerKg: parseFloat(item.price_per_kg),
+          availableKg: parseFloat(item.available_kg),
+          minOrderKg: parseFloat(item.min_order_kg),
+          maxOrderKg: parseFloat(item.max_order_kg),
+          description: item.description,
+          imageUrl: item.image_url,
+        })) : [];
+        setListings(mapped);
+      })
+      .catch(err=>{ console.error("Marketplace fetch error:", err); setListings([]); })
       .finally(()=>setLoading(false));
   },[]);
 

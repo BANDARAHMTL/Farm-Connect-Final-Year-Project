@@ -1,22 +1,40 @@
-// riceMillService.js — pure API, NO static fallback
+// riceMillService.js — fetch real prices from backend
 import api from "../api/api";
 
 export async function getMills() {
-  const res = await api.get("/rices");
-  return Array.isArray(res.data) ? res.data : [];
+  const res = await api.get("/rice-mills");
+  return Array.isArray(res.data.data) ? res.data.data : [];
 }
 
 export async function getMillById(id) {
-  const res = await api.get(`/rices/${id}`);
-  return res.data;
+  const res = await api.get(`/rice-mills/${id}`);
+  return res.data.data || res.data;
 }
 
 // Get real prices for a specific paddy type from database
-// Returns array of { millId, millName, location, typeName, pricePerKg, stockKg }
+// Fetches from rice_types table filtered by type_name
 export async function getSellingPrices(paddyType) {
   try {
-    const res = await api.get(`/rice/selling-prices?type=${encodeURIComponent(paddyType)}`);
-    return Array.isArray(res.data) ? res.data : [];
+    // Get all rice types and filter by type_name
+    const res = await api.get(`/rice-types`);
+    const types = Array.isArray(res.data.data) ? res.data.data : [];
+    
+    // Filter by matching type name (case-insensitive)
+    const matching = types.filter(t => 
+      t.type_name && t.type_name.toLowerCase() === paddyType.toLowerCase()
+    );
+    
+    // Map to compatible format
+    return matching.map(t => ({
+      millId: t.mill_id,
+      millName: t.mill_name,
+      location: t.location || "Unknown",
+      contactNumber: t.contact_number || "",
+      imageUrl: t.image_url || null,
+      rating: t.rating || 0,
+      pricePerKg: parseFloat(t.price_per_kg),
+      stockKg: parseFloat(t.stock_kg),
+    }));
   } catch {
     return [];
   }
@@ -35,8 +53,8 @@ export async function getOffers(paddyType, stockKg) {
       name:       p.millName,
       millName:   p.millName,
       location:   p.location,
-      contact:    p.contactNumber || "",
-      imageUrl:   p.imageUrl || null,
+      contact:    p.contactNumber,
+      imageUrl:   p.imageUrl,
       rating:     p.rating || 0,
       pricePerKg: p.pricePerKg,
       totalValue: Math.round(p.pricePerKg * n),

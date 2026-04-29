@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import api from "../api/api";
 import riceMillService from "../services/riceMillService";
 
 const SELL_SLIDES = [
@@ -35,9 +36,19 @@ export default function Selling() {
       const t = localStorage.getItem("farmerToken");
       if (f&&t){ setLogd(true); setFN(f.name||""); setForm(p=>({...p,name:f.name||"",contactNumber:f.mobile||"",address:f.address||""})); }
     } catch {}
-    axios.get("http://localhost:8080/api/paddy-types/active")
-      .then(r=>{ const ts=Array.isArray(r.data)?r.data:[]; setPTs(ts); if(ts.length)setPT(ts[0].type_name); })
-      .catch(()=>{ const d=["Nadu","Samba","Kiri Samba","Red Rice","Suwandel","Keeri Samba"]; setPTs(d.map(t=>({type_name:t,price_per_kg:0}))); setPT(d[0]); });
+    // Fetch paddy types from correct endpoint
+    api.get("/paddy-types/active")
+      .then(r=>{ 
+        const ts=Array.isArray(r.data.data)?r.data.data:[]; 
+        setPTs(ts); 
+        if(ts.length) setPT(ts[0].type_name); 
+      })
+      .catch(()=>{ 
+        // Fallback to hardcoded list if endpoint fails
+        const d=["Nadu","Samba","Kiri Samba","Red Rice","Suwandel","Keeri Samba"]; 
+        setPTs(d.map(t=>({type_name:t,price_per_kg:0}))); 
+        setPT(d[0]); 
+      });
   },[]);
 
   const canCheck   = useMemo(()=>{ const n=parseFloat(stockKg); return !isNaN(n)&&n>0; },[stockKg]);
@@ -61,10 +72,10 @@ export default function Selling() {
     setSubm(true);
     try{
       const farmer=JSON.parse(localStorage.getItem("farmer")||"null");
-      await axios.post("http://localhost:8080/api/selling",{
+      await api.post("/selling",{
         farmerId:farmer?.id||null, millId:selectedMill?.millId||selectedMill?.id||null,
         riceType:paddyType, stockKg:stock, pricePerKg:selectedMill?.pricePerKg||0,
-      },{headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`}});
+      });
       setSubd(true);
     }catch(err){alert(err?.response?.data?.message||"Failed. Try again.");}
     finally{setSubm(false);}

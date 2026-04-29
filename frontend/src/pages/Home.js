@@ -62,14 +62,14 @@ export default function Home({ setCurrentPage }) {
     let m = true;
     (async () => {
       try {
-        const [vR, rR] = await Promise.allSettled([api.get("/vehicles"), api.get("/rice/listings")]);
+        const [vR, rR] = await Promise.allSettled([api.get("/vehicles"), api.get("/marketplace")]);
         if (!m) return;
         const v = vR.status==="fulfilled"?vR.value.data:null;
-        const r = rR.status==="fulfilled"?rR.value.data:null;
+        const r = rR.status==="fulfilled"?rR.value.data?.data:null;  // Data is nested in response
         setStats([
           { label:"Vehicles", value:Array.isArray(v)?String(v.length):"24", icon:"🚜", color:T.gold },
-          { label:"Rice Mills", value:Array.isArray(r)?String(new Set(r.map(x=>x.millName)).size):"15", icon:"🏭", color:T.greenLt },
-          { label:"Avg/kg", value:Array.isArray(r)&&r.length?`Rs ${Math.round(r.reduce((s,x)=>s+(x.basePricePerKg||0),0)/r.length)}`:"Rs 85", icon:"💰", color:T.blue },
+          { label:"Rice Mills", value:Array.isArray(r)?String(new Set(r.map(x=>x.mill_name)).size):"15", icon:"🏭", color:T.greenLt },
+          { label:"Avg/kg", value:Array.isArray(r)&&r.length?`Rs ${Math.round(r.reduce((s,x)=>s+parseFloat(x.price_per_kg||0),0)/r.length)}`:"Rs 85", icon:"💰", color:T.blue },
           { label:"Farmers", value:"200+", icon:"👨‍🌾", color:T.green },
         ]);
       } catch {}
