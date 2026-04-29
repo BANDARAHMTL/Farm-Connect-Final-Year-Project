@@ -153,10 +153,10 @@ export default function Account({ setCurrentPage }) {
     try { fd = JSON.parse(cached); } catch { setLoading(false); return; }
     setFarmer(fd); setLoading(false);
     (async () => {
-      try { const r = await api.get(`/bookings/user/${fd.id}`); setBookings(Array.isArray(r.data)?r.data:[]); } catch { setBookings([]); }
+      try { const r = await api.get(`/bookings/user/${fd.id}`); setBookings(Array.isArray(r.data.data)?r.data.data:[]); } catch { setBookings([]); }
       try {
         const r = await api.get("/selling");
-        setSellings((r.data||[]).filter(s => String(s.farmer_id)===String(fd.id)));
+        setSellings((r.data.data||[]).filter(s => String(s.farmer_id)===String(fd.id)));
       } catch { setSellings([]); }
     })();
   }, []);

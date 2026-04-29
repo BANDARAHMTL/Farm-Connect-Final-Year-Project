@@ -104,8 +104,8 @@ function PaddyModal({ item, mills, onClose, onSave }) {
             </select>
             {selectedMill && (
               <div style={{ marginTop:8, padding:"8px 12px", background:"#f0fdf4", borderRadius:8, fontSize:"0.8rem", color:"#065f46", display:"flex", alignItems:"center", gap:8 }}>
-                {selectedMill.image_url && (
-                  <img src={selectedMill.image_url.startsWith("http") ? selectedMill.image_url : `http://localhost:8080${selectedMill.image_url}`}
+                {selectedMill.imageUrl && (
+                  <img src={selectedMill.imageUrl.startsWith("http") ? selectedMill.imageUrl : `http://localhost:8080${selectedMill.imageUrl}`}
                     alt="" style={{ width:32, height:32, borderRadius:6, objectFit:"cover" }} onError={e=>e.target.style.display="none"} />
                 )}
                 <span>✅ {selectedMill.millName}{selectedMill.location ? ` — ${selectedMill.location}` : ""}</span>
@@ -236,16 +236,34 @@ export default function PaddyTypes() {
 
   useEffect(() => { loadAll(); }, []);
 
+  async function handleAddClick() {
+    await loadAll();  // Wait for mills to load before opening modal
+    setModal({});
+  }
+
   async function loadAll() {
     setLoading(true);
     try {
-      const [tr, mr] = await Promise.all([
-        api.get("/rice-types"),
-        api.get("/rices"),
-      ]);
-      setTypes(Array.isArray(tr.data) ? tr.data : []);
-      setMills(Array.isArray(mr.data) ? mr.data : []);
-    } catch (e) { console.error(e); }
+      // Try to load rice types (paddy buying prices)
+      let typesData = [];
+      try {
+        const tr = await api.get("/rice-types");
+        typesData = Array.isArray(tr.data.data) ? tr.data.data : [];
+        console.log("✅ Loaded paddy types:", typesData.length ?? 0);
+      } catch (typeError) {
+        console.warn("⚠️ Could not load paddy types - endpoint may not exist yet");
+      }
+      
+      // Always load mills
+      const mr = await api.get("/rices");
+      console.log("✅ Loaded mills:", mr.data.data?.length ?? 0);
+      
+      setTypes(typesData);
+      setMills(Array.isArray(mr.data.data) ? mr.data.data : []);
+    } catch (e) { 
+      console.error("❌ Error loading mills:", e.message);
+      setMills([]); // Ensure mills is set to empty array on error
+    }
     finally { setLoading(false); }
   }
 
@@ -288,7 +306,7 @@ export default function PaddyTypes() {
             Each mill sets its own buying price per paddy variety — shown to farmers in the Selling section
           </p>
         </div>
-        <button style={s.btn("#059669","#fff")} onClick={() => setModal({})}>
+        <button style={s.btn("#059669","#fff")} onClick={handleAddClick}>
           + Add Buying Price
         </button>
       </div>

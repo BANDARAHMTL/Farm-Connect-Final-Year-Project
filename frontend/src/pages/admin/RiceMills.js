@@ -273,7 +273,7 @@ export default function RiceMills() {
   function showToast(msg) { setToast(msg); setTimeout(() => setToast(""), 3000); }
 
   async function load() {
-    try { const r = await api.get("/rices"); setMills(Array.isArray(r.data) ? r.data : []); }
+    try { const r = await api.get("/rices"); setMills(Array.isArray(r.data.data) ? r.data.data : []); }
     catch (e) { console.error(e); }
     finally { setLoading(false); }
   }

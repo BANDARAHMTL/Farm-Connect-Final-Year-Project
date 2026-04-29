@@ -7,6 +7,24 @@ import Controller from './Controller.js';
 import RiceMill from '../models/RiceMill.js';
 import pool from '../config/db.js';
 
+// Helper function to transform database fields from snake_case to camelCase
+const transformMill = (mill) => {
+  if (!mill) return null;
+  return {
+    id: mill.id,
+    millName: mill.mill_name,
+    location: mill.location,
+    address: mill.address,
+    contactNumber: mill.contact_number,
+    email: mill.email,
+    description: mill.description,
+    imageUrl: mill.image_url,
+    rating: mill.rating,
+    status: mill.status,
+    createdAt: mill.created_at
+  };
+};
+
 class RiceMillController extends Controller {
   constructor() {
     super(RiceMill);
@@ -69,7 +87,7 @@ export const getAllRiceMills = async (req, res) => {
       success: true,
       statusCode: 200,
       message: `Found ${mills.length} rice mill(s)`,
-      data: mills
+      data: mills.map(transformMill)
     });
   } catch (error) {
     res.status(500).json({
@@ -91,7 +109,7 @@ export const getAllRiceMillsAdmin = async (req, res) => {
       success: true,
       statusCode: 200,
       message: `Found ${mills.length} rice mill(s)`,
-      data: mills
+      data: mills.map(transformMill)
     });
   } catch (error) {
     res.status(500).json({
@@ -131,7 +149,7 @@ export const getRiceMillById = async (req, res) => {
       success: true,
       statusCode: 200,
       message: 'Rice mill found',
-      data: mills[0]
+      data: transformMill(mills[0])
     });
   } catch (error) {
     res.status(500).json({
@@ -171,7 +189,7 @@ export const addRiceMill = async (req, res) => {
       success: true,
       statusCode: 201,
       message: 'Rice mill added successfully',
-      data: newMill[0]
+      data: transformMill(newMill[0])
     });
   } catch (error) {
     res.status(500).json({
@@ -275,7 +293,7 @@ export const updateRiceMill = async (req, res) => {
       success: true,
       statusCode: 200,
       message: 'Rice mill updated successfully',
-      data: updatedMill[0]
+      data: transformMill(updatedMill[0])
     });
   } catch (error) {
     res.status(500).json({

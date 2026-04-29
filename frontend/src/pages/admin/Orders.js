@@ -15,7 +15,7 @@ export default function AdminOrders() {
   async function load() {
     try {
       const res = await api.get("/rice/orders");
-      setRows(res.data || []);
+      setRows(res.data?.data || []);
     } catch(err) { console.error(err); }
     finally { setLoading(false); }
   }
@@ -23,7 +23,7 @@ export default function AdminOrders() {
   async function loadMills() {
     try {
       const res = await api.get("/rices");
-      setMills(res.data || []);
+      setMills(res.data?.data || []);
     } catch {}
   }
 

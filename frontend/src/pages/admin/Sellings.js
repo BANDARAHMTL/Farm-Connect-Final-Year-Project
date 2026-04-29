@@ -26,7 +26,7 @@ export default function AdminSellings() {
   async function load() {
     try {
       const res = await api.get("/selling");
-      setRows(res.data || []);
+      setRows(res.data?.data || []);
     } catch(err) { console.error(err); }
     finally { setLoading(false); }
   }

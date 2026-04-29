@@ -18,7 +18,7 @@ function MarketplaceModal({ listing, mills, onClose, onSave }) {
   useEffect(() => {
     if (form.millId) {
       api.get(`/rice-types?millId=${form.millId}`)
-        .then(res => setRiceTypes(Array.isArray(res.data)?res.data:[]))
+        .then(res => setRiceTypes(Array.isArray(res.data.data)?res.data.data:[]))
         .catch(()=>setRiceTypes([]));
     }
   }, [form.millId]);
@@ -135,12 +135,32 @@ export default function Marketplace() {
 
   useEffect(() => { loadAll(); }, []);
 
+  async function handleAddClick() {
+    await loadAll();  // Wait for mills to load
+    setModal({});
+  }
+
   async function loadAll() {
     try {
-      const [lr, mr] = await Promise.all([api.get("/marketplace/admin"), api.get("/rices")]);
-      setListings(Array.isArray(lr.data)?lr.data:[]);
-      setMills(Array.isArray(mr.data)?mr.data:[]);
-    } catch(e) { console.error(e); } finally { setLoading(false); }
+      // Always load mills (needed for dropdown)
+      const mr = await api.get("/rices");
+      console.log("✅ Loaded mills:", mr.data.data?.length ?? 0);
+      setMills(Array.isArray(mr.data.data) ? mr.data.data : []);
+
+      // Try to load marketplace listings
+      let listingsData = [];
+      try {
+        const lr = await api.get("/marketplace/admin");
+        listingsData = Array.isArray(lr.data.data) ? lr.data.data : [];
+        console.log("✅ Loaded marketplace listings:", listingsData.length ?? 0);
+      } catch (marketError) {
+        console.warn("⚠️ Could not load marketplace listings - endpoint may not exist yet");
+      }
+      setListings(listingsData);
+    } catch(e) { 
+      console.error("❌ Error loading mills:", e.message);
+      setMills([]); // Ensure mills is set even if there's an error
+    } finally { setLoading(false); }
   }
 
   async function remove(id) {
@@ -177,7 +197,7 @@ export default function Marketplace() {
           <h2 style={{ margin:0, color:"#1a2535" }}>🛍️ Rice Marketplace</h2>
           <p style={{ margin:"4px 0 0", color:"#888", fontSize:"0.83rem" }}>{listings.length} listings in marketplace</p>
         </div>
-        <button style={s.btn("var(--g700)","#fff")} onClick={()=>setModal({})}>+ Add Listing</button>
+        <button style={s.btn("var(--g700)","#fff")} onClick={handleAddClick}>+ Add Listing</button>
       </div>
       <div style={s.bar}>
         <input style={{...s.input,width:220}} placeholder="🔍 Search listings…" value={q} onChange={e=>setQ(e.target.value)} />

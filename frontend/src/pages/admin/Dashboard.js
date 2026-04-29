@@ -122,13 +122,13 @@ export default function Dashboard() {
         api.get("/admin/farmers"), api.get("/vehicles"), api.get("/rices"),
         api.get("/bookings"), api.get("/selling"), api.get("/rice/orders"),
       ]);
-      const b = bRes.status==="fulfilled" ? (bRes.value.data||[]) : [];
-      const s = sRes.status==="fulfilled" ? (sRes.value.data||[]) : [];
-      const o = oRes.status==="fulfilled" ? (oRes.value.data||[]) : [];
+      const b = bRes.status==="fulfilled" ? (bRes.value.data?.data||[]) : [];
+      const s = sRes.status==="fulfilled" ? (sRes.value.data?.data||[]) : [];
+      const o = oRes.status==="fulfilled" ? (oRes.value.data?.data||[]) : [];
       setStats({
-        farmers:  fRes.status==="fulfilled" ? (fRes.value.data?.length||0) : 0,
-        vehicles: vRes.status==="fulfilled" ? (vRes.value.data?.length||0) : 0,
-        mills:    mRes.status==="fulfilled" ? (mRes.value.data?.length||0) : 0,
+        farmers:  fRes.status==="fulfilled" ? (fRes.value.data?.data?.length||0) : 0,
+        vehicles: vRes.status==="fulfilled" ? (vRes.value.data?.data?.length||0) : 0,
+        mills:    mRes.status==="fulfilled" ? (mRes.value.data?.data?.length||0) : 0,
         bookings: b.length, sellings: s.length, orders: o.length,
       });
       setBkData(b.slice(0,6)); setSlData(s.slice(0,6)); setOrData(o.slice(0,6));

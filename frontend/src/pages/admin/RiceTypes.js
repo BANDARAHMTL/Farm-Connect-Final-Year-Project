@@ -137,17 +137,43 @@ export default function RiceTypes() {
 
   useEffect(() => { loadAll(); }, []);
 
+  async function handleAddClick() {
+    await loadAll();  // Wait for mills and paddy varieties to load
+    setModal({});
+  }
+
   async function loadAll() {
     try {
-      const [tr, mr, pr] = await Promise.all([
-        api.get("/rice-types"),
-        api.get("/rices"),
-        api.get("/paddy-types"),
-      ]);
-      setTypes(Array.isArray(tr.data) ? tr.data : []);
-      setMills(Array.isArray(mr.data) ? mr.data : []);
-      setPaddyVarieties((Array.isArray(pr.data) ? pr.data : []).filter(v => v.status === "active"));
-    } catch(e) { console.error(e); } finally { setLoading(false); }
+      // Load rice mills (always needed for dropdown)
+      const mr = await api.get("/rices");
+      console.log("✅ Loaded mills:", mr.data.data?.length ?? 0);
+      setMills(Array.isArray(mr.data.data) ? mr.data.data : []);
+
+      // Try to load rice types (may not exist yet)
+      let typesData = [];
+      try {
+        const tr = await api.get("/rice-types");
+        typesData = Array.isArray(tr.data.data) ? tr.data.data : [];
+        console.log("✅ Loaded rice types:", typesData.length ?? 0);
+      } catch (typeError) {
+        console.warn("⚠️ Could not load rice types - endpoint may not exist yet");
+      }
+      setTypes(typesData);
+
+      // Try to load paddy varieties (may not exist yet)
+      let paddyData = [];
+      try {
+        const pr = await api.get("/paddy-types");
+        paddyData = (Array.isArray(pr.data.data) ? pr.data.data : []).filter(v => v.status === "active");
+        console.log("✅ Loaded paddy varieties:", paddyData.length ?? 0);
+      } catch (paddyError) {
+        console.warn("⚠️ Could not load paddy varieties - endpoint may not exist yet");
+      }
+      setPaddyVarieties(paddyData);
+    } catch(e) { 
+      console.error("❌ Error loading mills:", e.message);
+      setMills([]); // Ensure mills is set even if there's an error
+    } finally { setLoading(false); }
   }
 
   async function remove(id) {
@@ -181,7 +207,7 @@ export default function RiceTypes() {
           <h2 style={{ margin:0, color:"#1a2535" }}>🍚 Rice Types & Buying Prices</h2>
           <p style={{ margin:"5px 0 0", color:"#888", fontSize:"0.82rem" }}>Each rice mill can set a different buying price per paddy variety</p>
         </div>
-        <button style={s.btn("var(--g700)","#fff")} onClick={() => setModal({})}>+ Add Rice Type</button>
+        <button style={s.btn("var(--g700)","#fff")} onClick={handleAddClick}>+ Add Rice Type</button>
       </div>
 
       <div style={{ display:"flex", gap:10, marginBottom:15, flexWrap:"wrap", alignItems:"center" }}>

@@ -18,10 +18,10 @@ api.interceptors.request.use((config) => {
     url.includes("/marketplace/admin") ||
     url.includes("/marketplace") && (config.method === "post" || config.method === "put" || config.method === "delete") ||
     url.includes("/vehicles") && (config.method === "post" || config.method === "put" || config.method === "delete") ||
-    url.includes("/rices") && (config.method === "post" || config.method === "put" || config.method === "delete") ||
-    url.includes("/rice-mills") && (config.method === "post" || config.method === "put" || config.method === "delete") ||
-    url.includes("/rice-types") && (config.method === "post" || config.method === "put" || config.method === "delete") ||
-    url.includes("/paddy-types") && (config.method === "post" || config.method === "put" || config.method === "delete") ||
+    url.includes("/rices") ||
+    url.includes("/rice-mills") ||
+    url.includes("/rice-types") ||
+    url.includes("/paddy-types") ||
     url.includes("/bookings") && !url.includes("/user/") ||
     url.startsWith("/selling") && (config.method === "put" || config.method === "delete") ||
     url.startsWith("/rice/orders");
