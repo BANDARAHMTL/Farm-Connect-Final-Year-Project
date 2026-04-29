@@ -20,6 +20,8 @@ const pool = mysql.createPool({
     conn.release();
   } catch (err) {
     console.error("❌ MySQL connection failed:", err.message);
+    console.error("Full error:", err);
+    process.exit(1);
   }
 })();
 

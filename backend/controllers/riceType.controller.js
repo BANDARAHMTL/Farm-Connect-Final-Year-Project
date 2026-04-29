@@ -4,6 +4,10 @@ const transformRiceType = (row) => ({
   id: row.id,
   mill_id: row.mill_id,
   mill_name: row.mill_name || null,
+  location: row.location || null,
+  contact_number: row.contact_number || null,
+  image_url: row.image_url || null,
+  rating: row.rating || 0,
   type_name: row.type_name,
   price_per_kg: row.price_per_kg !== null ? Number(row.price_per_kg) : 0,
   stock_kg: row.stock_kg !== null ? Number(row.stock_kg) : 0,
@@ -16,7 +20,7 @@ export const getAllTypes = async (req, res) => {
   try {
     const conn = await pool.getConnection();
     const [types] = await conn.query(
-      `SELECT rt.*, rm.mill_name
+      `SELECT rt.*, rm.mill_name, rm.location, rm.contact_number, rm.image_url, rm.rating
        FROM rice_types rt
        LEFT JOIN rice_mills rm ON rt.mill_id = rm.id
        ORDER BY rt.id DESC`
@@ -52,7 +56,7 @@ export const getTypesByMill = async (req, res) => {
 
     const conn = await pool.getConnection();
     const [types] = await conn.query(
-      `SELECT rt.*, rm.mill_name
+      `SELECT rt.*, rm.mill_name, rm.location, rm.contact_number, rm.image_url, rm.rating
        FROM rice_types rt
        LEFT JOIN rice_mills rm ON rt.mill_id = rm.id
        WHERE rt.mill_id = ? AND rt.status = 'active'

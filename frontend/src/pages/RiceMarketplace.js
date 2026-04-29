@@ -41,6 +41,7 @@ export default function RiceMarketplace() {
           maxOrderKg: parseFloat(item.max_order_kg),
           description: item.description,
           imageUrl: item.image_url,
+          deliveryTime: item.delivery_time || '1-3 days',
         })) : [];
         setListings(mapped);
       })
