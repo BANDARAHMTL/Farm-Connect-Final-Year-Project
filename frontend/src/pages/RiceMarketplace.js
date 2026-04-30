@@ -29,19 +29,20 @@ export default function RiceMarketplace() {
     setLoading(true);
     api.get("/marketplace")
       .then(r=>{
-        // Map backend response to frontend format
+        // Map backend response to frontend format (handles both camelCase and snake_case)
         const mapped = Array.isArray(r.data.data) ? r.data.data.map(item => ({
           id: item.id,
-          riceTypeName: item.type_name,
-          millName: item.mill_name,
-          millLocation: item.mill_location,
-          basePricePerKg: parseFloat(item.price_per_kg),
-          availableKg: parseFloat(item.available_kg),
-          minOrderKg: parseFloat(item.min_order_kg),
-          maxOrderKg: parseFloat(item.max_order_kg),
+          riceTypeName: item.riceTypeName || item.type_name,
+          millName: item.millName || item.mill_name,
+          millId: item.millId || item.mill_id,
+          millLocation: item.millLocation || item.mill_location,
+          basePricePerKg: parseFloat(item.pricePerKg || item.price_per_kg),
+          availableKg: parseFloat(item.availableKg || item.available_kg),
+          minOrderKg: parseFloat(item.minOrderKg || item.min_order_kg),
+          maxOrderKg: parseFloat(item.maxOrderKg || item.max_order_kg),
           description: item.description,
-          imageUrl: item.image_url,
-          deliveryTime: item.delivery_time || '1-3 days',
+          imageUrl: item.imageUrl || item.image_url,
+          deliveryTime: item.deliveryTime || item.delivery_time || '1-3 days',
         })) : [];
         setListings(mapped);
       })

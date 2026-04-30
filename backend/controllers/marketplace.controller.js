@@ -13,6 +13,16 @@ class MarketplaceController {
 
 // Export handler functions for routes
 
+// Convert snake_case database fields to camelCase
+const convertSnakeToCamelCase = (obj) => {
+  const converted = {};
+  for (const [key, value] of Object.entries(obj)) {
+    const camelKey = key.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase());
+    converted[camelKey] = value;
+  }
+  return converted;
+};
+
 // Get all active marketplace listings (public)
 export const getListings = async (req, res) => {
   try {
@@ -34,11 +44,22 @@ export const getListings = async (req, res) => {
 
     conn.release();
 
+    // Convert to camelCase and rename specific fields
+    const convertedListings = listings.map(l => {
+      const converted = convertSnakeToCamelCase(l);
+      // Rename joined fields for consistency
+      if (converted.millName) converted.millName = l.mill_name;
+      if (converted.typeName) converted.riceTypeName = l.type_name;
+      if (converted.pricePerKg) converted.pricePerKg = Number(l.price_per_kg);
+      if (converted.availableKg) converted.availableKg = Number(l.available_kg);
+      return converted;
+    });
+
     res.status(200).json({
       success: true,
       statusCode: 200,
-      message: `Found ${listings.length} marketplace listing(s)`,
-      data: listings
+      message: `Found ${convertedListings.length} marketplace listing(s)`,
+      data: convertedListings
     });
   } catch (error) {
     res.status(500).json({
@@ -70,11 +91,24 @@ export const getAllListingsAdmin = async (req, res) => {
 
     conn.release();
 
+    // Convert to camelCase and rename specific fields
+    const convertedListings = listings.map(l => {
+      const converted = convertSnakeToCamelCase(l);
+      // Rename joined fields for consistency
+      if (converted.millName) converted.millName = l.mill_name;
+      if (converted.typeName) converted.riceTypeName = l.type_name;
+      if (converted.pricePerKg) converted.pricePerKg = Number(l.price_per_kg);
+      if (converted.availableKg) converted.availableKg = Number(l.available_kg);
+      if (converted.minOrderKg) converted.minOrderKg = Number(l.min_order_kg);
+      if (converted.maxOrderKg) converted.maxOrderKg = Number(l.max_order_kg);
+      return converted;
+    });
+
     res.status(200).json({
       success: true,
       statusCode: 200,
-      message: `Found ${listings.length} marketplace listing(s)`,
-      data: listings
+      message: `Found ${convertedListings.length} marketplace listing(s)`,
+      data: convertedListings
     });
   } catch (error) {
     res.status(500).json({
@@ -125,11 +159,21 @@ export const getListingById = async (req, res) => {
       });
     }
 
+    // Convert to camelCase and rename specific fields
+    const listing = listings[0];
+    const converted = convertSnakeToCamelCase(listing);
+    converted.millName = listing.mill_name;
+    converted.riceTypeName = listing.type_name;
+    converted.pricePerKg = Number(listing.price_per_kg);
+    converted.availableKg = Number(listing.available_kg);
+    converted.minOrderKg = Number(listing.min_order_kg);
+    converted.maxOrderKg = Number(listing.max_order_kg);
+
     res.status(200).json({
       success: true,
       statusCode: 200,
       message: 'Marketplace listing retrieved successfully',
-      data: listings[0]
+      data: converted
     });
   } catch (error) {
     res.status(500).json({
@@ -144,20 +188,30 @@ export const getListingById = async (req, res) => {
 // Add new marketplace listing (admin only)
 export const addListing = async (req, res) => {
   try {
+    // Handle both camelCase and snake_case field names from frontend
     const {
-      mill_id,
-      rice_type_id,
+      millId, mill_id,
+      riceTypeId, rice_type_id,
       title,
-      price_per_kg,
-      available_kg,
-      min_order_kg,
-      max_order_kg,
+      pricePerKg, price_per_kg,
+      availableKg, available_kg,
+      minOrderKg, min_order_kg,
+      maxOrderKg, max_order_kg,
       description,
-      delivery_time
+      deliveryTime, delivery_time
     } = req.body;
 
+    // Use camelCase or snake_case whichever is provided
+    const finalMillId = millId || mill_id;
+    const finalRiceTypeId = riceTypeId || rice_type_id;
+    const finalPrice = pricePerKg || price_per_kg;
+    const finalAvailable = availableKg || available_kg;
+    const finalMinOrder = minOrderKg || min_order_kg;
+    const finalMaxOrder = maxOrderKg || max_order_kg;
+    const finalDeliveryTime = deliveryTime || delivery_time;
+
     // Validate required fields
-    if (!mill_id || !rice_type_id || !price_per_kg || !available_kg) {
+    if (!finalMillId || !finalRiceTypeId || !finalPrice || finalAvailable === undefined) {
       return res.status(400).json({
         success: false,
         message: 'Mill ID, rice type ID, price per kg, and available kg are required'
@@ -173,7 +227,7 @@ export const addListing = async (req, res) => {
     const conn = await pool.getConnection();
 
     // Verify mill and rice type exist
-    const [mills] = await conn.query('SELECT id FROM rice_mills WHERE id = ?', [mill_id]);
+    const [mills] = await conn.query('SELECT id FROM rice_mills WHERE id = ?', [finalMillId]);
     if (mills.length === 0) {
       conn.release();
       return res.status(400).json({
@@ -182,7 +236,7 @@ export const addListing = async (req, res) => {
       });
     }
 
-    const [riceTypes] = await conn.query('SELECT id FROM rice_types WHERE id = ?', [rice_type_id]);
+    const [riceTypes] = await conn.query('SELECT id FROM rice_types WHERE id = ?', [finalRiceTypeId]);
     if (riceTypes.length === 0) {
       conn.release();
       return res.status(400).json({
@@ -198,9 +252,9 @@ export const addListing = async (req, res) => {
         min_order_kg, max_order_kg, description, image_url, delivery_time
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
-      mill_id, rice_type_id, title || null, price_per_kg, available_kg,
-      min_order_kg || 1, max_order_kg || 1000, description || null,
-      image_url, delivery_time || '1-3 days'
+      finalMillId, finalRiceTypeId, title || null, finalPrice, finalAvailable,
+      finalMinOrder || 1, finalMaxOrder || 1000, description || null,
+      image_url, finalDeliveryTime || '1-3 days'
     ]);
 
     // Get the created listing
@@ -218,11 +272,21 @@ export const addListing = async (req, res) => {
 
     conn.release();
 
+    // Convert to camelCase
+    const listing = newListing[0];
+    const converted = convertSnakeToCamelCase(listing);
+    converted.millName = listing.mill_name;
+    converted.riceTypeName = listing.type_name;
+    converted.pricePerKg = Number(listing.price_per_kg);
+    converted.availableKg = Number(listing.available_kg);
+    converted.minOrderKg = Number(listing.min_order_kg);
+    converted.maxOrderKg = Number(listing.max_order_kg);
+
     res.status(201).json({
       success: true,
       statusCode: 201,
       message: 'Marketplace listing created successfully',
-      data: newListing[0]
+      data: converted
     });
   } catch (error) {
     res.status(500).json({
@@ -240,13 +304,13 @@ export const updateListing = async (req, res) => {
     const id = parseInt(req.params.id);
     const {
       title,
-      price_per_kg,
-      available_kg,
-      min_order_kg,
-      max_order_kg,
+      pricePerKg, price_per_kg,
+      availableKg, available_kg,
+      minOrderKg, min_order_kg,
+      maxOrderKg, max_order_kg,
       description,
       status,
-      delivery_time
+      deliveryTime, delivery_time
     } = req.body;
 
     if (isNaN(id)) {
@@ -274,7 +338,7 @@ export const updateListing = async (req, res) => {
       image_url = `/uploads/marketplace/${req.file.filename}`;
     }
 
-    // Build update query dynamically
+    // Build update query dynamically - handle both camelCase and snake_case
     const updates = [];
     const values = [];
 
@@ -282,21 +346,25 @@ export const updateListing = async (req, res) => {
       updates.push('title = ?');
       values.push(title);
     }
-    if (price_per_kg !== undefined) {
+    const finalPrice = pricePerKg || price_per_kg;
+    if (finalPrice !== undefined) {
       updates.push('price_per_kg = ?');
-      values.push(price_per_kg);
+      values.push(finalPrice);
     }
-    if (available_kg !== undefined) {
+    const finalAvailable = availableKg || available_kg;
+    if (finalAvailable !== undefined) {
       updates.push('available_kg = ?');
-      values.push(available_kg);
+      values.push(finalAvailable);
     }
-    if (min_order_kg !== undefined) {
+    const finalMinOrder = minOrderKg || min_order_kg;
+    if (finalMinOrder !== undefined) {
       updates.push('min_order_kg = ?');
-      values.push(min_order_kg);
+      values.push(finalMinOrder);
     }
-    if (max_order_kg !== undefined) {
+    const finalMaxOrder = maxOrderKg || max_order_kg;
+    if (finalMaxOrder !== undefined) {
       updates.push('max_order_kg = ?');
-      values.push(max_order_kg);
+      values.push(finalMaxOrder);
     }
     if (description !== undefined) {
       updates.push('description = ?');
@@ -306,9 +374,10 @@ export const updateListing = async (req, res) => {
       updates.push('status = ?');
       values.push(status);
     }
-    if (delivery_time !== undefined) {
+    const finalDeliveryTime = deliveryTime || delivery_time;
+    if (finalDeliveryTime !== undefined) {
       updates.push('delivery_time = ?');
-      values.push(delivery_time);
+      values.push(finalDeliveryTime);
     }
     if (image_url !== undefined) {
       updates.push('image_url = ?');
@@ -344,11 +413,21 @@ export const updateListing = async (req, res) => {
 
     conn.release();
 
+    // Convert to camelCase
+    const listing = updatedListing[0];
+    const converted = convertSnakeToCamelCase(listing);
+    converted.millName = listing.mill_name;
+    converted.riceTypeName = listing.type_name;
+    converted.pricePerKg = Number(listing.price_per_kg);
+    converted.availableKg = Number(listing.available_kg);
+    converted.minOrderKg = Number(listing.min_order_kg);
+    converted.maxOrderKg = Number(listing.max_order_kg);
+
     res.status(200).json({
       success: true,
       statusCode: 200,
       message: 'Marketplace listing updated successfully',
-      data: updatedListing[0]
+      data: converted
     });
   } catch (error) {
     res.status(500).json({
