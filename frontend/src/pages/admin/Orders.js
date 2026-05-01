@@ -42,9 +42,12 @@ export default function AdminOrders() {
         quantity:      editRow.quantity,
         totalPrice:    editRow.total_price,
         paymentMethod: editRow.payment_method,
+        status:        editRow.status
       });
-      setRows(prev => prev.map(r => r.id === editRow.id ? {...r,...editRow} : r));
+      // Reload the data to get latest changes
+      await load();
       setEditRow(null);
+      alert("Order updated successfully!");
     } catch(err) { alert(err?.response?.data?.message || "Update failed"); }
     finally { setSaving(false); }
   }
@@ -52,7 +55,9 @@ export default function AdminOrders() {
   async function handleDelete(id) {
     try {
       await api.delete(`/rice/orders/${id}`);
-      setRows(prev => prev.filter(r => r.id !== id));
+      // Reload the data to get latest changes
+      await load();
+      alert("Order deleted successfully!");
     } catch(err) { alert(err?.response?.data?.message || "Delete failed"); }
     setConfirm(null);
   }
@@ -193,6 +198,18 @@ export default function AdminOrders() {
                       onChange={e => setEditRow(p => ({...p, payment_method:e.target.value}))}>
                       <option value="cod">Cash on Delivery</option>
                       <option value="online">Online</option>
+                    </select>
+                  </div>
+                  <div className="fc-field">
+                    <label className="fc-label">Order Status</label>
+                    <select className="fc-select" value={editRow.status || "pending"}
+                      onChange={e => setEditRow(p => ({...p, status:e.target.value}))}>
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="processing">Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
                     </select>
                   </div>
                 </div>

@@ -15,8 +15,8 @@ import marketplaceRoutes from "./routes/marketplace.routes.js";
 import paddyTypeRoutes   from "./routes/paddyType.routes.js";
 import bookingRoutes     from "./routes/booking.routes.js";
 import sellingRoutes     from "./routes/selling.routes.js";
+import riceRoutes        from "./routes/rice.routes.js";
 import { createOrder, getAllOrders, getOrderById, updateOrder, deleteOrder } from "./controllers/orders.controller.js";
-// import riceRoutes        from "./routes/rice.routes.js";
 
 dotenv.config();
 
@@ -52,7 +52,7 @@ app.use("/api/marketplace",  marketplaceRoutes);
 app.use("/api/paddy-types",  paddyTypeRoutes);
 app.use("/api/bookings",     bookingRoutes);
 app.use("/api/selling",      sellingRoutes);
-// app.use("/api/rice",         riceRoutes);
+app.use("/api/rice",         riceRoutes);
 
 // ── ORDERS API ENDPOINTS ──────────────────────────────────────────
 app.get("/api/orders",        getAllOrders);

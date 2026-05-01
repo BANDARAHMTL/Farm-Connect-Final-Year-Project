@@ -5,6 +5,7 @@ const PAGES = [
   { id: "Booking",     label: "BOOKING"     },
   { id: "Selling",     label: "SELL PADDY"  },
   { id: "RiceMarket",  label: "RICE MARKET" },
+  { id: "About",       label: "ABOUT"       },
   { id: "Account",     label: "ACCOUNT"     },
 ];
 

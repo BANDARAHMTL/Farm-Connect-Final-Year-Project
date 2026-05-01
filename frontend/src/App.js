@@ -3,10 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // ═════ CORE COMPONENTS ═════
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // ═════ PAGES ═════
 import Home from "./pages/Home";
+import About from "./pages/About";
 import Account from "./pages/Account";
 import AccountSignIn from "./pages/Account_sign_in";
 import AccountSignUp from "./pages/Account_sign_up";
@@ -179,6 +181,7 @@ export default function App() {
                     {currentPage === "Home" && (
                       <Home setCurrentPage={setCurrentPage} />
                     )}
+                    {currentPage === "About" && <About />}
                     {currentPage === "Booking" && (
                       <BookingPage
                         vehicleType={vehicleType}
@@ -223,6 +226,7 @@ export default function App() {
                     {currentPage === "RiceMarket" && <RiceMarket />}
                   </main>
                 </div>
+                <Footer setCurrentPage={setCurrentPage} />
               </div>
             }
           />
