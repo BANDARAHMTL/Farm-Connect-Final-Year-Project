@@ -41,7 +41,7 @@
 .filter-select:focus {
   outline: none;
   border-color: var(--g500);
-  box-shadow: 0 0 0 3px rgba(39, 168, 92, 0.14);
+  box-shadow: 0 0 0 3px rgba(230, 237, 233, 0.14)));
 }
 
 /* ─── Listings Grid ───────────────────────────────────────────── */
@@ -56,7 +56,7 @@
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(239, 113, 113, 0.1);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;

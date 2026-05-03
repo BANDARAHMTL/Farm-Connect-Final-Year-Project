@@ -6,7 +6,7 @@ export default function About() {
       {/* Hero Section */}
       <div style={{
         background: "linear-gradient(135deg, #27a85c 0%, #1d7a42 100%)",
-        color: "#fff",
+        color: "#8bf787",
         padding: "60px 20px",
         textAlign: "center",
         borderRadius: "12px",
@@ -28,7 +28,7 @@ export default function About() {
         marginBottom: "40px"
       }}>
         <div style={{
-          background: "#f5f5f5",
+          background: "#eaeaea",
           padding: "30px",
           borderRadius: "12px",
           border: "2px solid #27a85c"

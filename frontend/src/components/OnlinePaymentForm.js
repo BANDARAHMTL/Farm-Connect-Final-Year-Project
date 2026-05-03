@@ -262,7 +262,11 @@ export default function OnlinePaymentForm({ amount, currency="Rs", onSuccess, on
           {errors.name && <div style={{ color:"#ef4444", fontSize:"0.72rem", marginTop:3 }}>{errors.name}</div>}
         </div>
 
-        {/* Amount summary */}
+        {/* Amount summary */
+        
+        
+        
+        }
         {amount > 0 && (
           <div style={{ background:"#f0f9ff", border:"1px solid #bae6fd", borderRadius:10, padding:"12px 16px", marginBottom:18, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
             <span style={{ fontSize:"0.82rem", color:"#0369a1", fontWeight:600 }}>Total to pay</span>

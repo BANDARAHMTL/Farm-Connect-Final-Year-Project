@@ -103,7 +103,7 @@ export default function BookingPage({
     <div
       style={{
         fontFamily: "'Inter',sans-serif",
-        background: "#07140a",
+        background: "#fffafa",
         minHeight: "100vh",
       }}
     >
@@ -243,7 +243,7 @@ export default function BookingPage({
             width: 44,
             height: 44,
             borderRadius: "50%",
-            background: "rgba(7,24,16,0.72)",
+            background: "rgba(155, 255, 208, 0.72)",
             border: "1px solid rgba(255,255,255,0.22)",
             color: "#f1f5f2",
             fontSize: "1.5rem",
@@ -268,7 +268,7 @@ export default function BookingPage({
             width: 44,
             height: 44,
             borderRadius: "50%",
-            background: "rgba(7,24,16,0.72)",
+            background: "rgba(57, 255, 163, 0.72)",
             border: "1px solid rgba(255,255,255,0.22)",
             color: "#f1f5f2",
             fontSize: "1.5rem",
@@ -569,7 +569,7 @@ export default function BookingPage({
               border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: 99,
               padding: "9px 16px",
-              background: "rgba(255,255,255,0.05)",
+              background: "rgba(167, 255, 177, 0.05)",
               flexShrink: 0,
             }}
           >
