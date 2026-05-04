@@ -11,6 +11,9 @@ api.interceptors.request.use((config) => {
   const url         = config.url || "";
   const adminToken  = localStorage.getItem("admin_token");
   const farmerToken = localStorage.getItem("farmerToken");
+  
+  //const userToken   = localStorage.getItem("userToken");
+
 
   // Admin-only endpoints always get admin token
   const isAdminEndpoint =

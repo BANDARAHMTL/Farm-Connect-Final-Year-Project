@@ -140,7 +140,7 @@ export default function OnlinePaymentForm({ amount, currency="Rs", onSuccess, on
       <div style={{ fontSize:"1.1rem", fontWeight:800, color:"#065f46" }}>Payment Successful!</div>
       <div style={{ color:"#6b7280", fontSize:"0.85rem", marginTop:6 }}>{currency} {Number(amount).toLocaleString()} charged</div>
     </div>
-  );
+  );  
 
   return (
     <div>
